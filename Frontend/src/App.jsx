@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import './App.css';
-import HomePage from './Pages/HomePage';
+import Navbar from './components/Navbar';
+import LoginOption from './Pages/LoginOption';
 
 function App() {
 
   return (
-    <div className='bg-blue-50'>
-      <HomePage />
+    <div className='h-screen w-full bg-blue-50'>
+        {/* <Navbar /> */}
+      <LoginOption/>
     </div>
   )
 }
