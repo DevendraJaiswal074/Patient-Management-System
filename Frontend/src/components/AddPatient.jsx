@@ -2,7 +2,7 @@ import React from "react";
 
 function AddPatient() {
   return (
-    <div className="bg-white w-max ml-6 mt-5 px-5 py-6 border border-black/20 rounded">
+    <div className="bg-white w-max mt-5 px-5 py-6 border border-black/20 rounded">
       <h2 className="font-bold text-lg">Add New Paitent</h2>
 
       <form className="flex flex-col gap-2 mt-4 min-w-60">

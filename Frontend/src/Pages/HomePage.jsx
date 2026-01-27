@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import AddPatient from "../components/AddPatient";
+import PatientList from "../components/PatientList";
 
 function HomePage() {
   return (
@@ -9,11 +10,22 @@ function HomePage() {
         <Navbar />
       </div>
 
-      <div className="w-max">
+      <div className="w-max flex gap-4 mt-5 mx-3">
         <AddPatient />
+        <div className="w-full">
+          <PatientList />
+        </div>
       </div>
+
+
+
     </div>
   );
 }
 
-export default HomePage;
+export default HomePage;   
+
+
+
+
+
