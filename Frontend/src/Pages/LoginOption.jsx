@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const LoginOption = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-sky-100 to-white relative overflow-hidden">
@@ -42,15 +44,15 @@ const LoginOption = () => {
           </button>
 
           {/* Staff Button */}
-          <button
-            className="w-full py-3 rounded-lg text-lg font-medium text-white
+          <Link to={"/dashboard"}
+            className="w-full py-3 px-10 rounded-lg text-lg font-medium text-white
             bg-gradient-to-r from-blue-500 to-indigo-600
             hover:from-blue-600 hover:to-indigo-700
             transition-all duration-300 ease-in-out
             shadow-md hover:shadow-lg hover:-translate-y-0.5"
           >
             Staff
-          </button>
+          </Link>
 
         </div>
 
