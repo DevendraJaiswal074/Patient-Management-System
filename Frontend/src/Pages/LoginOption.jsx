@@ -14,13 +14,13 @@ const LoginOption = () => {
         {/* logo */}
         <div className="mb-8">
           <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-lg shadow">
-            M
+            Dr.
           </div>
           <h1 className="text-xl font-semibold text-gray-800">
             Doctor XYZ
           </h1>
           <p className="text-sm text-gray-500">
-            Medical & Patient Management System
+            Patient Management System
           </p>
         </div>
 
@@ -34,7 +34,7 @@ const LoginOption = () => {
           
           {/* Student Button */}
           <button
-            className="w-full py-3 rounded-lg text-lg font-medium text-white
+            className="w-full py-3 px-37 rounded-lg text-lg font-medium  text-white
             bg-gradient-to-r from-emerald-500 to-teal-500
             hover:from-emerald-600 hover:to-teal-600
             transition-all duration-300 ease-in-out
@@ -45,7 +45,7 @@ const LoginOption = () => {
 
           {/* Staff Button */}
           <Link to={"/dashboard"}
-            className="w-full py-3 px-10 rounded-lg text-lg font-medium text-white
+            className="w-full py-3 px-37 rounded-lg text-lg font-medium text-white
             bg-gradient-to-r from-blue-500 to-indigo-600
             hover:from-blue-600 hover:to-indigo-700
             transition-all duration-300 ease-in-out
@@ -58,7 +58,8 @@ const LoginOption = () => {
 
         {/* footer */}
         <p className="text-xs text-gray-400 mt-10">
-          Secure medical portal for authorized users only
+          Secure access for doctors and clinic staff
+          @GoodLuck👍
         </p>
 
       </div>
