@@ -3,6 +3,9 @@ import './App.css';
 import Navbar from './components/Navbar';
 import LoginOption from './Pages/LoginOption';
 import Signup from './Pages/Signup';
+import DoctorLogin from './Pages/DoctorLogin';
+import StaffLogin from './Pages/StaffLogin';
+import AdminLogin from './Pages/AdminLogin';
 import { Route, Routes } from "react-router-dom";
 import HomePage from './Pages/HomePage';
 
@@ -13,6 +16,10 @@ function App() {
       <Routes>
         <Route path='/' element={<LoginOption />} />
         <Route path='/dashboard' element={<HomePage />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/doctor-login' element={<DoctorLogin />} />
+        <Route path='/staff-login' element={<StaffLogin />} />
+        <Route path='/admin-login' element={<AdminLogin />} />
       </Routes>
     </div>
   )

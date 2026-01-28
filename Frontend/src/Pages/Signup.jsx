@@ -28,7 +28,7 @@ export default function Signup() {
         </p>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action={"/dashboard"} className="space-y-4">
           
         {/* Email */}
           <input

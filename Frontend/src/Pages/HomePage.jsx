@@ -10,7 +10,7 @@ function HomePage() {
         <Navbar />
       </div>
 
-      <div className="w-max flex gap-4 mt-5 mx-3">
+      <div className="flex items-start gap-4 mt-5 mx-3">
         <AddPatient />
         <div className="w-full">
           <PatientList />
