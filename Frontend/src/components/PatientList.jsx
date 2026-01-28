@@ -1,8 +1,8 @@
 const patients = [
-  { id: 1, name: "Amit Kumar", phone: "012-248-53798" },
-  { id: 2, name: "Neha Sharma", phone: "012-245-53789" },
-  { id: 3, name: "Rajesh Singh", phone: "012-245-63789" },
-  { id: 4, name: "Priya Mehta", phone: "012-245-53789" },
+  { id: 1, name: "Chandan Chaudhary", phone: "012-248-53798" },
+  { id: 2, name: "Deepanshu Yadav", phone: "012-245-53789" },
+  { id: 3, name: "Devendra Jaiswal", phone: "012-245-63789" },
+  { id: 4, name: "Divyansh Chakravarty", phone: "012-245-53789" },
   { id: 5, name: "Suresh Agarwal", phone: "012-245-63789" },
   { id: 6, name: "Anu Patel", phone: "012-245-66789" },
   { id: 7, name: "Manoj Tiwari", phone: "012-245-65789" },
