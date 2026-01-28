@@ -42,7 +42,7 @@ const DoctorLogin = () => {
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/>
               </svg>
             </div>
-            <span className="text-2xl font-bold text-white">PMSCare</span>
+            <span className="text-2xl font-bold text-white">PMS</span>
           </div>
 
           {/* Center Content */}
@@ -65,7 +65,7 @@ const DoctorLogin = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
-                <span className="text-emerald-50">View & Update Patient Records</span>
+                <span className="text-emerald-50">View & Update Patient List</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -73,22 +73,22 @@ const DoctorLogin = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
-                <span className="text-emerald-50">Manage Consultation Schedule</span>
+                <span className="text-emerald-50">Manage Appointments Schedule</span>
               </div>
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                   </svg>
                 </div>
                 <span className="text-emerald-50">Write Prescriptions & Reports</span>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Bottom */}
           <p className="text-emerald-200 text-sm">
-            © 2026 PMSCare Hospital Management System
+            ©PMS Patient Management System
           </p>
         </div>
       </div>
@@ -97,14 +97,14 @@ const DoctorLogin = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+          {/* <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
             <div className="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center">
               <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/>
               </svg>
             </div>
             <span className="text-2xl font-bold text-gray-800">MediCare</span>
-          </div>
+          </div> */}
 
           {/* Header */}
           <div className="text-center mb-8">
@@ -114,7 +114,7 @@ const DoctorLogin = () => {
               </svg>
             </div>
             <h2 className="text-3xl font-bold text-gray-800 mb-2">Doctor Login</h2>
-            <p className="text-gray-500">Welcome back! Please enter your credentials</p>
+            <p className="text-gray-500">Welcome back! Please enter your details</p>
           </div>
 
           {/* Form */}
@@ -136,7 +136,7 @@ const DoctorLogin = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-white"
-                  placeholder="doctor@medicare.com"
+                  placeholder="doctor@gmail.com"
                   required
                 />
               </div>
@@ -203,7 +203,7 @@ const DoctorLogin = () => {
               type="submit"
               className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-700 focus:ring-4 focus:ring-emerald-200 transition-all duration-300 shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
             >
-              Sign In
+              Login
             </button>
           </form>
 
