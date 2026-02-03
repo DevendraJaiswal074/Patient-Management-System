@@ -7,6 +7,7 @@ const API_URL = "http://localhost:5000/api";
 
 function HomePage() {
   const [patients, setPatients] = useState([]);
+  const [checkedOut, setCheckedOut] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch patients from backend
@@ -15,6 +16,11 @@ function HomePage() {
       const response = await fetch(`${API_URL}/patients`);
       const data = await response.json();
       setPatients(data);
+
+      const checkOutResponse = await fetch(`${API_URL}/checked-in`);
+      const checkOutdata = await checkOutResponse.json();
+      setCheckedOut(checkOutdata);
+
     } catch (error) {
       console.error("Error fetching patients:", error);
     } finally {
@@ -76,7 +82,7 @@ function HomePage() {
       <div className="top-0 relative">
         <Navbar
           patients={patients}
-          onCheckIn={handleCheckIn}
+          checkedOut={checkedOut}
         />
       </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Navbar({ patients, onCheckIn }) {
+function Navbar({ patients, onCheckIn, checkedOut }) {
   return (
     <div className="w-full">
       <div className="bg-[#3475b9] text-white py-3 flex justify-center items-center gap-4">
@@ -27,7 +27,7 @@ function Navbar({ patients, onCheckIn }) {
             <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
           </svg>
           <p className="font-bold">
-            Total Paitent Today: <span className="font-normal">{patients.length}</span>
+            Total Paitent Today: <span className="font-normal">{`${checkedOut.length + patients.length}`}</span>
           </p>
         </div>
 
@@ -41,7 +41,7 @@ function Navbar({ patients, onCheckIn }) {
             <path d="M702-480 560-622l57-56 85 85 170-170 56 57-226 226Zm-342 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 260Zm0-340Z" />
           </svg>
           <p className="font-bold">
-            Checked Out: <span className="font-normal">40</span>
+            Checked Out: <span className="font-normal">{checkedOut.length}</span>
           </p>
         </div>
 
@@ -55,7 +55,7 @@ function Navbar({ patients, onCheckIn }) {
             <path d="M480-240Zm-320 80v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440h14q-11 18-16.5 38.5T472-360q-54 1-107.5 14.5T260-306q-9 5-14.5 14t-5.5 20v32h283l80 80H160Zm320-320q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm236 480L576-300q-13-13-18.5-28t-5.5-30q0-32 23-57t59-25q28 0 44 13t38 35q20-20 36.5-34t45.5-14q37 0 59.5 25.5T880-357q0 15-6 30t-18 27L716-160Z" />
           </svg>
           <p className="font-bold">
-            Checked in: <span className="font-normal">30</span>
+            Checked in: <span className="font-normal">{patients.length}</span>
           </p>
         </div>
       </div>
