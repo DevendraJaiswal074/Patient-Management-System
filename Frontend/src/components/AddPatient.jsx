@@ -130,7 +130,7 @@ function AddPatient({ onAddPatient }) {
           className="rounded border border-black/20 p-2"
         /> */}
 
-        //allow entr only number and 10 digitsSystem
+        {/* allow entr only number and 10 digitsSystem */}
         <input
           type="text"
           name="phone"
