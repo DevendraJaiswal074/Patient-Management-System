@@ -37,11 +37,7 @@ function AddPatient({ onAddPatient }) {
       return;
     }
 
-    setIsSubmitting(true);
-    setMessage({ text: "", type: "" });
-
-    const result = await onAddPatient(formData);
-
+    
     //function for phone no.
     if (formData.phone.length !== 10) {
       setMessage({
@@ -50,6 +46,10 @@ function AddPatient({ onAddPatient }) {
       });
       return;
     }
+
+    setIsSubmitting(true);
+    setMessage({ text: "", type: "" });
+    const result = await onAddPatient(formData);
 
     if (result.success) {
       setMessage({ text: "Patient added successfully!", type: "success" });
@@ -103,14 +103,6 @@ function AddPatient({ onAddPatient }) {
           placeholder="Patient name"
           className="rounded border border-black/20 p-2"
         />
-        {/* <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          placeholder="Patient age"
-          className="rounded border border-black/20 p-2"
-        /> */}
         <input
           type="number"
           name="age"
@@ -121,16 +113,8 @@ function AddPatient({ onAddPatient }) {
           max={109}
           className="rounded border border-black/20 p-2"
         />
-        {/* <input
-          type="number"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          placeholder="Phone number"
-          className="rounded border border-black/20 p-2"
-        /> */}
 
-        {/* allow entr only number and 10 digitsSystem */}
+        {/* allow enter only number and 10 digitsSystem */}
         <input
           type="text"
           name="phone"
