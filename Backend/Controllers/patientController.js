@@ -14,7 +14,7 @@ exports.getPatients = (req, res) => {
   }
 };
 
-exports.addPatient = (req, res) => {
+exports.addPatient = async(req, res) => {
   const { name, age, phone, type } = req.body;
 
   if (!name || !age || !phone || !type) {
@@ -36,6 +36,16 @@ exports.addPatient = (req, res) => {
   writeJSON(patientsFile, patients);
 
   res.status(201).json(newPatient);
+   
+
+  if (age <= 0 || age >= 110) {
+    return res.status(400).json({
+      error: "Age must be between 1 and 109"
+    });
+  }
+
+  const patient = await Patient.create(req.body);
+  res.status(201).json(patient);
 };
 
 exports.checkInPatient = (req, res) => {

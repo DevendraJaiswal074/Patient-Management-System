@@ -19,12 +19,35 @@ function AddPatient({ onAddPatient }) {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Validate form
+  //   if (!formData.name || !formData.age || !formData.phone) {
+  //     setMessage({ text: "Please fill all fields", type: "error" });
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   setMessage({ text: "", type: "" });
+
+  //   const result = await onAddPatient(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validate form
-    if (!formData.name || !formData.age || !formData.phone) {
+
+    const age = Number(formData.age);
+
+    if (!formData.name || !formData.phone || !formData.age) {
       setMessage({ text: "Please fill all fields", type: "error" });
+      return;
+    }
+
+    if (age <= 0 || age >= 110) {
+      setMessage({
+        text: "Age must be between 1 and 109",
+        type: "error",
+      });
       return;
     }
 
@@ -43,7 +66,10 @@ function AddPatient({ onAddPatient }) {
         type: "normal",
       });
     } else {
-      setMessage({ text: result.error || "Failed to add patient", type: "error" });
+      setMessage({
+        text: result.error || "Failed to add patient",
+        type: "error",
+      });
     }
 
     setIsSubmitting(false);
@@ -70,7 +96,10 @@ function AddPatient({ onAddPatient }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2 mt-4 min-w-60">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-2 mt-4 min-w-60"
+      >
         <input
           type="text"
           name="name"
@@ -79,12 +108,22 @@ function AddPatient({ onAddPatient }) {
           placeholder="Patient name"
           className="rounded border border-black/20 p-2"
         />
+        {/* <input
+          type="number"
+          name="age"
+          value={formData.age}
+          onChange={handleChange}
+          placeholder="Patient age"
+          className="rounded border border-black/20 p-2"
+        /> */}
         <input
           type="number"
           name="age"
           value={formData.age}
           onChange={handleChange}
           placeholder="Patient age"
+          min={1}
+          max={109}
           className="rounded border border-black/20 p-2"
         />
         <input
@@ -97,7 +136,10 @@ function AddPatient({ onAddPatient }) {
         />
 
         <div className="flex gap-5 mt-2">
-          <label htmlFor="normal" className="flex items-center gap-2 cursor-pointer">
+          <label
+            htmlFor="normal"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <input
               type="radio"
               name="type"
@@ -109,7 +151,10 @@ function AddPatient({ onAddPatient }) {
             <span>Normal</span>
           </label>
 
-          <label htmlFor="emergency" className="flex items-center gap-2 cursor-pointer">
+          <label
+            htmlFor="emergency"
+            className="flex items-center gap-2 cursor-pointer"
+          >
             <input
               type="radio"
               name="type"
