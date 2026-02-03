@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Chandan Chaudhary",
+    "phone": "012-248-53798",
+    "age": 25,
+    "type": "normal"
+  },
+  {
+    "id": 2,
+    "name": "Deepanshu Yadav",
+    "phone": "012-245-53789",
+    "age": 30,
+    "type": "normal"
+  },
+  {
+    "id": 4,
+    "name": "Divyansh Chakravarty",
+    "phone": "012-245-53789",
+    "age": 35,
+    "type": "normal"
+  },
+  {
+    "id": 5,
+    "name": "Suresh Agarwal",
+    "phone": "012-245-63789",
+    "age": 45,
+    "type": "normal"
+  },
+  {
+    "id": 6,
+    "name": "Chandan Chaudhary",
+    "age": 44,
+    "phone": "a",
+    "type": "emergency",
+    "addedAt": "2026-02-03T12:09:21.109Z"
+  }
+]
