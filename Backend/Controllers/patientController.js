@@ -68,3 +68,36 @@ exports.getCheckedIn = (req, res) => {
     res.status(500).json({ error: "Failed to fetch checked-in patients" });
   }
 };
+
+const Patient = require("../models/Patient");
+
+// GET patients
+exports.getPatients = async (req, res) => {
+  const patients = await Patient.find();
+  res.json(patients);
+};
+
+// ADD patient
+exports.addPatient = async (req, res) => {
+  const patient = await Patient.create(req.body);
+  res.status(201).json(patient);
+};
+
+// CHECK-IN / CHECK-OUT
+exports.checkInPatient = async (req, res) => {
+  const patient = await Patient.findByIdAndUpdate(
+    req.params.id,
+    { status: "CheckedOut" },
+    { new: true }
+  );
+
+  if (!patient) return res.status(404).json({ error: "Not found" });
+
+  res.json(patient);
+};
+
+// GET checked-in
+exports.getCheckedIn = async (req, res) => {
+  const patients = await Patient.find({ status: "CheckedIn" });
+  res.json(patients);
+};
