@@ -19,20 +19,6 @@ function AddPatient({ onAddPatient }) {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Validate form
-  //   if (!formData.name || !formData.age || !formData.phone) {
-  //     setMessage({ text: "Please fill all fields", type: "error" });
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-  //   setMessage({ text: "", type: "" });
-
-  //   const result = await onAddPatient(formData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,6 +41,15 @@ function AddPatient({ onAddPatient }) {
     setMessage({ text: "", type: "" });
 
     const result = await onAddPatient(formData);
+
+    //function for phone no.
+    if (formData.phone.length !== 10) {
+      setMessage({
+        text: "Phone number must be 10 digits",
+        type: "error",
+      });
+      return;
+    }
 
     if (result.success) {
       setMessage({ text: "Patient added successfully!", type: "success" });
@@ -126,12 +121,31 @@ function AddPatient({ onAddPatient }) {
           max={109}
           className="rounded border border-black/20 p-2"
         />
-        <input
+        {/* <input
           type="number"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
           placeholder="Phone number"
+          className="rounded border border-black/20 p-2"
+        /> */}
+
+        //allow entr only number and 10 digitsSystem
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,10}$/.test(value)) {
+              setFormData((prev) => ({
+                ...prev,
+                phone: value,
+              }));
+            }
+          }}
+          placeholder="Phone number"
+          inputMode="numeric"
           className="rounded border border-black/20 p-2"
         />
 
