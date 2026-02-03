@@ -74,16 +74,19 @@ function HomePage() {
   return (
     <div className="h-screen w-full bg-blue-50">
       <div className="top-0 relative">
-        <Navbar />
+        <Navbar
+          patients={patients}
+          onCheckIn={handleCheckIn}
+        />
       </div>
 
       <div className="flex items-start gap-4 mt-5 mx-3">
         <AddPatient onAddPatient={handleAddPatient} />
         <div className="w-full">
-          <PatientList 
-            patients={patients} 
-            onCheckIn={handleCheckIn} 
-            loading={loading} 
+          <PatientList
+            patients={patients}
+            onCheckIn={handleCheckIn}
+            loading={loading}
           />
         </div>
       </div>
@@ -91,7 +94,7 @@ function HomePage() {
   );
 }
 
-export default HomePage;   
+export default HomePage;
 
 
 

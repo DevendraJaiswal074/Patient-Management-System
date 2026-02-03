@@ -26,13 +26,5 @@
     "phone": "012-245-63789",
     "age": 45,
     "type": "normal"
-  },
-  {
-    "id": 6,
-    "name": "Chandan Chaudhary",
-    "age": 44,
-    "phone": "a",
-    "type": "emergency",
-    "addedAt": "2026-02-03T12:09:21.109Z"
   }
 ]

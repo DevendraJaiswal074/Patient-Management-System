@@ -7,6 +7,7 @@ function AddPatient({ onAddPatient }) {
     phone: "",
     type: "normal",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
 
@@ -87,7 +88,7 @@ function AddPatient({ onAddPatient }) {
           className="rounded border border-black/20 p-2"
         />
         <input
-          type="text"
+          type="number"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
