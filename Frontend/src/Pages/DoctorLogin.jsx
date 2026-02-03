@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DoctorLogin = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,6 +22,7 @@ const DoctorLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate("/doctor-dashboard");
     console.log("Doctor Login:", formData);
   };
 
@@ -199,7 +203,7 @@ const DoctorLogin = () => {
             </div>
 
             {/* Submit Button */}
-            <button
+            <button 
               type="submit"
               className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-700 focus:ring-4 focus:ring-emerald-200 transition-all duration-300 shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
             >
@@ -236,3 +240,4 @@ const DoctorLogin = () => {
 };
 
 export default DoctorLogin;
+

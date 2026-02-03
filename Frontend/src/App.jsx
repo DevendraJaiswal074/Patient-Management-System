@@ -8,6 +8,7 @@ import StaffLogin from './Pages/StaffLogin';
 import AdminLogin from './Pages/AdminLogin';
 import { Route, Routes } from "react-router-dom";
 import HomePage from './Pages/HomePage';
+import DoctorPanel from './Pages/DoctorPanel';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/doctor-login' element={<DoctorLogin />} />
         <Route path='/staff-login' element={<StaffLogin />} />
         <Route path='/admin-login' element={<AdminLogin />} />
+        <Route path='/doctor-dashboard' element={<DoctorPanel />} />  
       </Routes>
     </div>
   )
