@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/connectDB");
 
 dotenv.config();
-// connectDB();
+connectDB();
 
 const patientRoutes = require("./Routes/patientRoutes");
 

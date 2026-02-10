@@ -3,7 +3,8 @@ import PatientList from "../components/PatientList";
 import Navbar from "../components/Navbar";
 import * as XLSX from "xlsx";
 
-const API_URL = "http://localhost:5000/api";
+// const API_URL = "http://localhost:5000/api";
+import { backendUrl } from "../App";
 
 function DoctorPanel() {
   const [patients, setPatients] = useState([]);
@@ -13,11 +14,11 @@ function DoctorPanel() {
   // Fetch patients
   const fetchPatients = async () => {
     try {
-      const response = await fetch(`${API_URL}/patients`);
+      const response = await fetch(`${backendUrl}/api/patients`);
       const data = await response.json();
       setPatients(data);
 
-      const checkOutResponse = await fetch(`${API_URL}/checked-in`);
+      const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
       const checkOutdata = await checkOutResponse.json();
       setCheckedOut(checkOutdata);
     } catch (error) {
@@ -34,7 +35,7 @@ function DoctorPanel() {
   // Check-in patient
   const handleCheckIn = async (patientId) => {
     try {
-      const response = await fetch(`${API_URL}/patients/${patientId}`, {
+      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
         method: "DELETE",
       });
 
