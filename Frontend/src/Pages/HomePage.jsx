@@ -3,7 +3,9 @@ import Navbar from "../components/Navbar";
 import AddPatient from "../components/AddPatient";
 import PatientList from "../components/PatientList";
 
-const API_URL = "http://localhost:5000/api";
+import { backendUrl } from "../App";
+
+// const API_URL = backendUrl;
 
 function HomePage() {
   const [patients, setPatients] = useState([]);
@@ -13,11 +15,11 @@ function HomePage() {
   // Fetch patients from backend
   const fetchPatients = async () => {
     try {
-      const response = await fetch(`${API_URL}/patients`);
+      const response = await fetch(`${backendUrl}/api/patients`);
       const data = await response.json();
       setPatients(data);
 
-      const checkOutResponse = await fetch(`${API_URL}/checked-in`);
+      const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
       const checkOutdata = await checkOutResponse.json();
       setCheckedOut(checkOutdata);
 
@@ -35,7 +37,7 @@ function HomePage() {
   // Add new patient
   const handleAddPatient = async (patientData) => {
     try {
-      const response = await fetch(`${API_URL}/patients`, {
+      const response = await fetch(`${backendUrl}/api/patients`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +62,7 @@ function HomePage() {
   // Check-in patient (remove from list and store in separate file)
   const handleCheckIn = async (patientId) => {
     try {
-      const response = await fetch(`${API_URL}/patients/${patientId}`, {
+      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
         method: "DELETE",
       });
 

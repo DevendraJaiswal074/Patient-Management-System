@@ -10,6 +10,8 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from './Pages/HomePage';
 import DoctorPanel from './Pages/DoctorPanel';
 
+export const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 function App() {
 
   return (
