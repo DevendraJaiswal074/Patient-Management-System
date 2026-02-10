@@ -150,7 +150,7 @@ function DoctorPanel() {
     }
   };
 
-  // 📥 Download Excel Report
+  // Download Excel Report
   const handleDownloadReport = () => {
     if (patients.length === 0) {
       alert("No data available");
@@ -185,7 +185,6 @@ function DoctorPanel() {
             Download Excel Report
           </button>
         </div>
-    )
 
         <PatientList
           patients={patients}
