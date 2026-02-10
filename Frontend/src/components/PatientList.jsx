@@ -1,9 +1,10 @@
 ﻿import React, { useState } from "react";
 
-const PatientList = ({ patients, onCheckIn, loading }) => {
+const PatientList = ({ patients = [], onCheckIn, loading, hideCheckInButton = false }) => {
   const [checkingIn, setCheckingIn] = useState(null);
 
   const handleCheckIn = async (patientId) => {
+    if (!onCheckIn) return;
     setCheckingIn(patientId);
     await onCheckIn(patientId);
     setCheckingIn(null);
@@ -20,12 +21,12 @@ const PatientList = ({ patients, onCheckIn, loading }) => {
   return (
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="text-center px-4 py-2 border-b border-black/30 rounded font-bold text-xl text-gray-700">
-        Today's Patient List
+        Today's Checked-In Patients
       </div>
 
       {patients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
-          No patients in the list. Add a new patient to get started.
+          No checked-in patients right now.
         </div>
       ) : (
         <table className="w-full text-sm">
@@ -36,13 +37,17 @@ const PatientList = ({ patients, onCheckIn, loading }) => {
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
               <th className="px-4 py-2 text-left">Type</th>
-              <th className="px-4 py-2 text-left">Action</th>
+              <th className="px-4 py-2 text-left">Checked In At</th>
+
+              {!hideCheckInButton && (
+                <th className="px-4 py-2 text-left">Action</th>
+              )}
             </tr>
           </thead>
 
           <tbody className="divide-y">
             {patients.map((p, i) => (
-              <tr key={p.id} className={p.type === "emergency" ? "bg-[#fff]" : ""}>
+              <tr key={p.id || i}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">
@@ -51,12 +56,11 @@ const PatientList = ({ patients, onCheckIn, loading }) => {
                       p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
                     }`}
                   ></div>
-                  {p.name}
+                  {p.name || "-"}
                 </td>
 
-                <td className="px-4 py-2">{p.age}</td>
-
-                <td className="px-4 py-2">{p.phone}</td>
+                <td className="px-4 py-2">{p.age || "-"}</td>
+                <td className="px-4 py-2">{p.phone || "-"}</td>
 
                 <td className="px-4 py-2">
                   <span
@@ -71,16 +75,24 @@ const PatientList = ({ patients, onCheckIn, loading }) => {
                 </td>
 
                 <td className="px-4 py-2">
-                  <button
-                    onClick={() => handleCheckIn(p.id)}
-                    disabled={checkingIn === p.id}
-                    className={`bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded transition-all ${
-                      checkingIn === p.id ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    {checkingIn === p.id ? "Checking..." : "Check In"}
-                  </button>
+                  {p.checkedInAt
+                    ? new Date(p.checkedInAt).toLocaleString()
+                    : "-"}
                 </td>
+
+                {!hideCheckInButton && (
+                  <td className="px-4 py-2">
+                    <button
+                      onClick={() => handleCheckIn(p.id)}
+                      disabled={checkingIn === p.id}
+                      className={`bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded transition-all ${
+                        checkingIn === p.id ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {checkingIn === p.id ? "Checking..." : "Check In"}
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

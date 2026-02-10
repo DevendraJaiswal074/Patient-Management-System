@@ -3,82 +3,57 @@ import PatientList from "../components/PatientList";
 import Navbar from "../components/Navbar";
 import * as XLSX from "xlsx";
 
-// const API_URL = "http://localhost:5000/api";
-import { backendUrl } from "../App";
+const API_URL = "http://localhost:5000/api";
 
 function DoctorPanel() {
-  const [patients, setPatients] = useState([]);
-  const [checkedOut, setCheckedOut] = useState([]);
+  const [checkedInPatients, setCheckedInPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch patients
-  const fetchPatients = async () => {
+  const fetchCheckedInPatients = async () => {
     try {
-      const response = await fetch(`${backendUrl}/api/patients`);
+      const response = await fetch(`${API_URL}/checked-in`);
       const data = await response.json();
-      setPatients(data);
-
-      const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
-      const checkOutdata = await checkOutResponse.json();
-      setCheckedOut(checkOutdata);
+      console.log("Checked-in patients:", data); // debug
+      setCheckedInPatients(data || []);
     } catch (error) {
-      console.error("Error fetching patients:", error);
+      console.error("Error fetching checked-in patients:", error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPatients();
+    fetchCheckedInPatients();
   }, []);
 
-  // Check-in patient
-  const handleCheckIn = async (patientId) => {
-    try {
-      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setPatients((prev) => prev.filter((p) => p.id !== patientId));
-        return { success: true };
-      } else {
-        const error = await response.json();
-        return { success: false, error: error.error };
-      }
-    } catch (error) {
-      console.error("Error checking in patient:", error);
-      return { success: false, error: "Failed to check in patient" };
-    }
-  };
-
-  // Download Excel Report
   const handleDownloadReport = () => {
-    if (patients.length === 0) {
+    if (!checkedInPatients || checkedInPatients.length === 0) {
       alert("No data available");
       return;
     }
 
-    const excelData = patients.map((p, index) => ({
+    const excelData = checkedInPatients.map((p, index) => ({
       "S.No": index + 1,
-      "Patient Name": p.name,
-      "Phone Number": p.phone,
-      "Status": "Checked In",
+      "Patient Name": p.name || "-",
+      "Phone Number": p.phone || "-",
+      "Checked In Date": p.checkedInAt
+        ? new Date(p.checkedInAt).toLocaleString()
+        : "-",
+      Status: "Checked In",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Patients");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "CheckedInPatients");
 
-    XLSX.writeFile(workbook, "Patient_Report.xlsx");
+    XLSX.writeFile(workbook, "CheckedIn_Patients_Report.xlsx");
   };
 
   return (
     <div className="w-full min-h-screen bg-gray-100">
-      <Navbar patients={patients} checkedOut={checkedOut} />
+      <Navbar patients={[]} checkedOut={checkedInPatients} />
 
       <div className="max-w-7xl mx-auto px-6 mt-6">
-        {/* Download Button */}
         <div className="flex justify-end mb-4">
           <button
             onClick={handleDownloadReport}
@@ -89,9 +64,9 @@ function DoctorPanel() {
         </div>
 
         <PatientList
-          patients={patients}
-          onCheckIn={handleCheckIn}
+          patients={checkedInPatients}
           loading={loading}
+          hideCheckInButton={true}
         />
       </div>
     </div>
