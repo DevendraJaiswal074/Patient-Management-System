@@ -22,19 +22,19 @@ const DoctorLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Doctor Login:", formData);
+    // console.log("Doctor Login:", formData);
     navigate("/doctor-dashboard");
   };
 
   return (
     <div className="min-h-screen flex">
       {/* Left Panel - Decorative */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-emerald-600 via-teal-600 to-cyan-700 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 border-[40px] border-white rounded-full"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 border-[40px] border-white rounded-full"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-[30px] border-white rounded-full"></div>
+          <div className="absolute top-10 left-10 w-72 h-72 border-40 border-white rounded-full"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 border-40 border-white rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-30 border-white rounded-full"></div>
         </div>
 
         {/* Content */}
@@ -205,7 +205,7 @@ const DoctorLogin = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-700 focus:ring-4 focus:ring-emerald-200 transition-all duration-300 shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
+              className="w-full py-3 px-4 bg-linear-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-700 focus:ring-4 focus:ring-emerald-200 transition-all duration-300 shadow-lg shadow-emerald-200 hover:shadow-xl hover:shadow-emerald-300"
             >
               Login
             </button>

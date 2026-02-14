@@ -16,7 +16,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100">
       <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-8">
         
         {/* Heading */}

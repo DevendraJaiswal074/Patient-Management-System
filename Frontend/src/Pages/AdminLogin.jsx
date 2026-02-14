@@ -32,30 +32,30 @@ const AdminLogin = () => {
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        <div className="absolute inset-0 bg-[linear-linear(rgba(139,92,246,0.03)_1px,transparent_1px),linear-linear(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-size-[50px_50px]"></div>
         
-        {/* Gradient Orbs */}
+        {/* linear Orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-violet-600/10 rounded-full blur-3xl"></div>
       </div>
 
       {/* Security Lines Animation */}
       <div className="absolute inset-0 overflow-hidden opacity-20">
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-pulse delay-500"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-linear-to-b from-transparent via-purple-500 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 right-1/4 w-px h-full bg-linear-to-b from-transparent via-pink-500 to-transparent animate-pulse delay-500"></div>
       </div>
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 via-violet-600 to-pink-600 rounded-3xl mb-4 shadow-2xl shadow-purple-500/30 relative">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-purple-600 via-violet-600 to-pink-600 rounded-3xl mb-4 shadow-2xl shadow-purple-500/30 relative">
             <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
             {/* Glow Ring */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-600 to-pink-600 blur-xl opacity-50 -z-10"></div>
+            <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-purple-600 to-pink-600 blur-xl opacity-50 -z-10"></div>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Admin Access</h1>
           <p className="text-slate-400">PMSCare Hospital Management System</p>
@@ -197,7 +197,7 @@ const AdminLogin = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-4 px-4 bg-gradient-to-r from-purple-600 via-violet-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:via-violet-700 hover:to-pink-700 focus:ring-4 focus:ring-purple-500/30 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 relative overflow-hidden group"
+              className="w-full py-4 px-4 bg-linear-to-r from-purple-600 via-violet-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:via-violet-700 hover:to-pink-700 focus:ring-4 focus:ring-purple-500/30 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 relative overflow-hidden group"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 {step === 1 ? 'Continue' : 'Verify & Login'}
@@ -206,7 +206,7 @@ const AdminLogin = () => {
                 </svg>
               </span>
               {/* Button Shine Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </button>
           </form>
 

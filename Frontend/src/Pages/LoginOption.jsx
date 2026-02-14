@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 
 const LoginOption = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full opacity-20 blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-cyan-500 rounded-full opacity-15 blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600 rounded-full opacity-10 blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-600 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
       {/* Floating medical icons background */}
@@ -21,7 +21,7 @@ const LoginOption = () => {
       {/* Main container */}
       <div className="relative z-10 w-full max-w-5xl mx-4 flex rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm bg-white/5 border border-white/10">
         {/* Left Panel - Branding */}
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 p-12 flex-col justify-between relative overflow-hidden">
+        <div className="hidden md:flex md:w-1/2 bg-linear-to-br from-blue-600 via-blue-700 to-cyan-600 p-12 flex-col justify-between relative overflow-hidden">
           {/* Decorative circles */}
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
           <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-white/10 rounded-full"></div>
@@ -139,10 +139,10 @@ const LoginOption = () => {
           <div className="space-y-4">
             {/* Doctor Card */}
             <Link to="/doctor-login" className="group block">
-              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-gradient-to-r from-gray-50 to-white hover:border-emerald-400 hover:shadow-lg hover:shadow-emerald-100 transition-all duration-300 overflow-hidden">
+              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-emerald-400 hover:shadow-lg hover:shadow-emerald-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-emerald-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"
@@ -184,10 +184,10 @@ const LoginOption = () => {
 
             {/* Staff Card */}
             <Link to="/staff-login" className="group block">
-              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-gradient-to-r from-gray-50 to-white hover:border-blue-400 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 overflow-hidden">
+              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-blue-400 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"
@@ -229,10 +229,10 @@ const LoginOption = () => {
 
             {/* Admin Card (Optional) */}
             <Link to="/admin-login" className="group block">
-              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-gradient-to-r from-gray-50 to-white hover:border-purple-400 hover:shadow-lg hover:shadow-purple-100 transition-all duration-300 overflow-hidden">
+              <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-purple-400 hover:shadow-lg hover:shadow-purple-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-purple-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-200 group-hover:scale-110 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"

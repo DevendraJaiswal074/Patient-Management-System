@@ -42,7 +42,7 @@ const PatientList = ({ patients, onCheckOut, loading }) => {
 
           <tbody className="divide-y">
             {patients.map((p, i) => (
-              <tr key={p.id} className={p.type === "emergency" ? "bg-[#fff]" : ""}>
+              <tr key={p.id} className={p.type === "emergency" ? "bg-white" : ""}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">
