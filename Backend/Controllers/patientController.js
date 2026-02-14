@@ -1,6 +1,6 @@
 const {
   patientsFile,
-  checkedInFile,
+  checkedOutFile,
   readJSON,
   writeJSON,
 } = require("../services/fileService");
@@ -44,12 +44,12 @@ exports.addPatient = (req, res) => {
   res.status(201).json(newPatient);
 };
 
-// CHECK-IN patient (move from patients to checkedIn)
-exports.checkInPatient = (req, res) => {
+// CHECK-OUT patient (move from patients to checkedOut)
+exports.checkOutPatient = (req, res) => {
   const id = parseInt(req.params.id);
 
   const patients = readJSON(patientsFile);
-  const checkedIn = readJSON(checkedInFile);
+  const checkedOut = readJSON(checkedOutFile);
 
   const index = patients.findIndex((p) => p.id === id);
   if (index === -1) {
@@ -57,21 +57,21 @@ exports.checkInPatient = (req, res) => {
   }
 
   const [patient] = patients.splice(index, 1);
-  patient.checkedInAt = new Date().toISOString();
+  patient.checkedOutAt = new Date().toISOString();
 
-  checkedIn.push(patient);
+  checkedOut.push(patient);
 
   writeJSON(patientsFile, patients);
-  writeJSON(checkedInFile, checkedIn);
+  writeJSON(checkedOutFile, checkedOut);
 
   res.json(patient);
 };
 
-// GET checked-in patients
-exports.getCheckedIn = (req, res) => {
+// GET checked-out patients
+exports.getCheckedOut = (req, res) => {
   try {
-    const checkedIn = readJSON(checkedInFile);
-    res.json(checkedIn);
+    const checkedOut = readJSON(checkedOutFile);
+    res.json(checkedOut);
   } catch {
     res.status(500).json({ error: "Failed to fetch checked-in patients" });
   }

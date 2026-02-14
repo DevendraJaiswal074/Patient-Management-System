@@ -29,7 +29,7 @@ function StaffPanel() {
   // Fetch checkedOut from backend
   const fetchCheckedOut = async () => {
     try {
-      const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
+      const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
       const checkOutdata = await checkOutResponse.json();
       setCheckedOut(checkOutdata);
 

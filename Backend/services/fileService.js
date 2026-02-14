@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const patientsFile = path.join(__dirname, "../data/patients.json");
-const checkedInFile = path.join(__dirname, "../data/checkedInPatients.json");
+const checkedOutFile = path.join(__dirname, "../data/checkedInPatients.json");
 
 const readJSON = (filePath) => {
   const data = fs.readFileSync(filePath, "utf-8");
@@ -15,7 +15,7 @@ const writeJSON = (filePath, data) => {
 
 module.exports = {
   patientsFile,
-  checkedInFile,
+  checkedOutFile,
   readJSON,
   writeJSON
 };
