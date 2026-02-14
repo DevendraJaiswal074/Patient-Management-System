@@ -7,6 +7,7 @@ import * as XLSX from "xlsx";
 import { backendUrl } from "../App";
 import AllPatientList from "../components/AllPatientList";
 import CheckedOutList from "../components/CheckedOutList";
+import TodayPatient from "../components/TodayPatient";
 
 function DoctorPanel() {
   const [patients, setPatients] = useState([]);
@@ -171,6 +172,7 @@ function DoctorPanel() {
 
         <AllPatientList />
         {/* <CheckedOutList /> */}
+        {/* <TodayPatient /> */}
 
       </div>
     </div>

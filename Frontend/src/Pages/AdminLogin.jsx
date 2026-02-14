@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -24,6 +27,7 @@ const AdminLogin = () => {
       setStep(2);
     } else {
       console.log("Admin Login:", formData);
+      navigate("/admin-dashboard")
     }
   };
 
