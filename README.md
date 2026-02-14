@@ -49,6 +49,7 @@ This project helps hospital staff and doctors organize appointments, maintain pa
   - Team Members
     - [Chandanchaudhary](https://github.com/iamchandanchaudhary)
     - [DeepanshuYadav](https://github.com/deepanshu-yadav3245)
+    - **Me:**[DevendraJaiswal](https://github.com/DevendraJaiswal074)
       
 ---
 
