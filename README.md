@@ -1,82 +1,83 @@
 # 🏥 Patient Management System
 
-A web-based **Patient Management System** designed to help **doctors and compounders** efficiently manage daily patient appointments, view patient lists, and calculate daily earnings. The system also automatically sends appointment notifications to patients via their phone numbers.
+A web-based **Patient Management System** designed for local hospitals and clinics to efficiently manage patient appointments, daily records, and doctor workflows.
+
+This project helps hospital staff and doctors organize appointments, maintain patient history, and communicate appointment details with patients easily.
 
 ---
 
-## 📌 Project Overview
+## 🚀 Features
 
-The **Patient Management System** is built to simplify the process of handling patient appointments in clinics or hospitals. It allows medical staff to easily view patient details, track the total number of patients per day, calculate daily earnings, and automatically notify patients about their appointment schedule.
+- 🔐 **Role-Based Authentication**
+  - Separate login for **Staff** and **Doctors**
+  - Secure access based on user roles
 
-Patients receive an SMS notification like:
+- 📋 **Appointment Management**
+  - Create and manage daily patient appointment lists
+  - View patient details in an organized format
 
-> *"You booked an appointment with Dr. XYZ. Your checking number will come at 1 PM on Date: XX/XX/XXXX. Thanks for your appointment."*
+- 📆 **Date-wise Records**
+  - Maintain **historical patient records** stored date-wise
+  - Easily access old appointment lists
 
----
+- 📥 **Download Patient List**
+  - Download **day-wise patient lists** for record keeping and reporting
 
-## 🎯 Key Features
+- 📲 **WhatsApp Sharing**
+  - Share appointment details directly with patients via **WhatsApp**
 
-- 📋 **Patient Listing**
-  - Easy-to-view patient list for doctors and compounders
-  - Displays patient details such as name, phone number, and appointment number
-
-- 🔢 **Daily Patient Limit**
-  - Maximum of **70 patients per day**
-  - Automatically schedules patients for the **next day** once the daily limit is reached
-
-- 💰 **Daily Earnings Calculation**
-  - Automatically calculates the total number of patients
-  - Displays total earnings for the day
-
-- 📱 **Automatic SMS Notifications**
-  - Sends appointment confirmation messages to patients
-  - Includes doctor name, appointment time, and date
-
-- 🧾 **Patient Details Management**
-  - Add and store patient information
-  - Auto-generate appointment numbers
-
-- ⏭ **Next-Day Appointment Automation**
-  - Automatically assigns appointments to the next available day when the current day is full
+- 📱 **Responsive UI**
+  - Works smoothly on **desktop and mobile devices**
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
-- **Frontend:** React.js  
-- **Styling:** Tailwind CSS  
-- **Database:** (Specify database here – e.g., MongoDB / MySQL / Firebase)  
-- **Other Tools:**  
-  - SMS API (for sending appointment notifications)
-  - REST APIs for data handling
+- **Frontend:** React.js, Tailwind CSS  
+- **Backend / Database:** MongoDB  
+- **Version Control:** Git & GitHub  
 
 ---
 
-## ⚙️ Functionalities Summary
+## 🤝 Team Collaboration
 
-- Add and manage patient records
-- Auto-send appointment SMS to patients
-- Display patient list for doctors and compounders
-- Calculate total patients and daily income
-- Automatically manage daily and next-day appointments
+- Developed collaboratively with a team
+- Used **GitHub** for:
+  - Version control
+  - Feature-based development
+  - Code reviews and collaboration
+  - Team Members
+    - [Chandanchaudhary](https://github.com/iamchandanchaudhary)
+    - [DeepanshuYadav](https://github.com/deepanshu-yadav3245)
+      
+---
+
+## 🎯 Use Case
+
+This system is built for:
+- Local hospitals
+- Clinics
+- Small healthcare centers  
+
+To simplify:
+- Patient appointment handling
+- Daily patient tracking
+- Doctor and staff coordination
 
 ---
 
-## 🚀 Future Enhancements (Optional)
+## 📌 Project Status
 
-- Doctor-wise appointment management
-- Admin dashboard with analytics
-- Appointment cancellation and rescheduling
-- Patient history tracking
-- Role-based authentication (Doctor / Compounder / Admin)
+🟢 **Currently in Development**  
+New features and improvements are being actively added.
 
 ---
 
-## 📂 Project Setup (Optional)
+## 📷 Screenshots
 
-```bash
-# Install dependencies
-npm install
+![dd](https://github.com/user-attachments/assets/31536695-cbff-45a5-9c6d-1927112b3665)
+![ee](https://github.com/user-attachments/assets/e6bfa4ce-86ff-47a5-b584-87b8e80314e2)
+![ff](https://github.com/user-attachments/assets/696e4166-19c5-4f40-af0c-a2b513c08b24)
+![gg](https://github.com/user-attachments/assets/d5d631cf-de4a-4b2b-9d1e-72827b032b09)
 
-# Run the development server
-npm start
+---
