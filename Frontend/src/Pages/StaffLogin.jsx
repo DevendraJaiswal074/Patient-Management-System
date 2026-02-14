@@ -22,7 +22,7 @@ const StaffLogin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Staff Login:", formData);
-    navigate("/dashboard");
+    navigate("/staff-dashboard");
   };
 
   return (

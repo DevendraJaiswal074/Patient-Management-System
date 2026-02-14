@@ -18,9 +18,20 @@ function DoctorPanel() {
       const data = await response.json();
       setPatients(data);
 
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch checkedOut from backend
+  const fetchCheckedOut = async () => {
+    try {
       const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
       const checkOutdata = await checkOutResponse.json();
       setCheckedOut(checkOutdata);
+
     } catch (error) {
       console.error("Error fetching patients:", error);
     } finally {
@@ -30,10 +41,11 @@ function DoctorPanel() {
 
   useEffect(() => {
     fetchPatients();
+    fetchCheckedOut();
   }, []);
 
-  // Check-in patient
-  const handleCheckIn = async (patientId) => {
+  // Check-out patient
+  const handleCheckOut = async (patientId) => {
     try {
       const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
         method: "DELETE",
@@ -90,7 +102,7 @@ function DoctorPanel() {
 
         <PatientList
           patients={patients}
-          onCheckIn={handleCheckIn}
+          onCheckOut={handleCheckOut}
           loading={loading}
         />
       </div>

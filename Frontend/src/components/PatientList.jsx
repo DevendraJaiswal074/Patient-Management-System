@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const PatientList = ({ patients, onCheckIn, loading }) => {
-  const [checkingIn, setCheckingIn] = useState(null);
+const PatientList = ({ patients, onCheckOut, loading }) => {
+  const [checkingOut, setCheckingOut] = useState(null);
 
-  const handleCheckIn = async (patientId) => {
-    setCheckingIn(patientId);
-    await onCheckIn(patientId);
-    setCheckingIn(null);
+  const handleCheckOut = async (patientId) => {
+    setCheckingOut(patientId);
+    await onCheckOut(patientId);
+    setCheckingOut(null);
   };
 
   if (loading) {
@@ -72,13 +72,13 @@ const PatientList = ({ patients, onCheckIn, loading }) => {
 
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleCheckIn(p.id)}
-                    disabled={checkingIn === p.id}
+                    onClick={() => handleCheckOut(p.id)}
+                    disabled={checkingOut === p.id}
                     className={`bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded transition-all ${
-                      checkingIn === p.id ? "opacity-50 cursor-not-allowed" : ""
+                      checkingOut === p.id ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
-                    {checkingIn === p.id ? "Checking..." : "Check In"}
+                    {checkingOut === p.id ? "Checking..." : "Check out"}
                   </button>
                 </td>
               </tr>

@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Navbar({ patients, onCheckIn, checkedOut }) {
+function Navbar({ patients, onCheckOut, checkedOut }) {
   return (
     <div className="w-full">
-      <div className="bg-[#3475b9] text-white py-3 flex justify-center items-center gap-4">
+      <Link to={"/"} className="bg-[#3475b9] text-white py-3 flex justify-center items-center gap-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 640 640"
@@ -14,9 +15,10 @@ function Navbar({ patients, onCheckIn, checkedOut }) {
         <p className="text-center text-2xl font-bold">
           Paient Management System
         </p>
-      </div>
+      </Link>
 
       <div className="flex justify-center items-center gap-20 py-2 border-b border-black/20">
+        
         {/* Total Paitent */}
         <div className="flex gap-2">
           <svg

@@ -7,7 +7,7 @@ import { backendUrl } from "../App";
 
 // const API_URL = backendUrl;
 
-function HomePage() {
+function StaffPanel() {
   const [patients, setPatients] = useState([]);
   const [checkedOut, setCheckedOut] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +19,16 @@ function HomePage() {
       const data = await response.json();
       setPatients(data);
 
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch checkedOut from backend
+  const fetchCheckedOut = async () => {
+    try {
       const checkOutResponse = await fetch(`${backendUrl}/api/checked-in`);
       const checkOutdata = await checkOutResponse.json();
       setCheckedOut(checkOutdata);
@@ -31,7 +41,8 @@ function HomePage() {
   };
 
   useEffect(() => {
-    fetchPatients();
+    fetchPatients()
+    fetchCheckedOut()
   }, []);
 
   // Add new patient
@@ -60,7 +71,7 @@ function HomePage() {
   };
 
   // Check-in patient (remove from list and store in separate file)
-  const handleCheckIn = async (patientId) => {
+  const handleCheckOut = async (patientId) => {
     try {
       const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
         method: "DELETE",
@@ -93,7 +104,7 @@ function HomePage() {
         <div className="w-full">
           <PatientList
             patients={patients}
-            onCheckIn={handleCheckIn}
+            onCheckOut={handleCheckOut}
             loading={loading}
           />
         </div>
@@ -102,7 +113,7 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default StaffPanel;
 
 
 
