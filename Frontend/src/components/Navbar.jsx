@@ -1,7 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Navbar({ patients, onCheckOut, checkedOut }) {
+import { backendUrl } from "../App";
+
+function Navbar() {
+
+  const [patients, setPatients] = useState([]);
+  const [checkedOut, setCheckedOut] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch patients
+  const fetchPatients = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/patients`);
+      const data = await response.json();
+      setPatients(data);
+
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch checkedOut from backend
+  const fetchCheckedOut = async () => {
+    try {
+      const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
+      const checkOutdata = await checkOutResponse.json();
+      setCheckedOut(checkOutdata);
+
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatients();
+    fetchCheckedOut();
+  }, []);
+
   return (
     <div className="w-full">
       <Link to={"/"} className="bg-[#3475b9] text-white py-3 flex justify-center items-center gap-4">
@@ -18,7 +58,7 @@ function Navbar({ patients, onCheckOut, checkedOut }) {
       </Link>
 
       <div className="flex justify-center items-center gap-20 py-2 border-b border-black/20">
-        
+
         {/* Total Paitent */}
         <div className="flex gap-2">
           <svg

@@ -15,57 +15,57 @@ function DoctorPanel() {
   const [loading, setLoading] = useState(true);
 
   // Fetch patients
-  const fetchPatients = async () => {
-    try {
-      const response = await fetch(`${backendUrl}/api/patients`);
-      const data = await response.json();
-      setPatients(data);
+  // const fetchPatients = async () => {
+  //   try {
+  //     const response = await fetch(`${backendUrl}/api/patients`);
+  //     const data = await response.json();
+  //     setPatients(data);
 
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error fetching patients:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Fetch checkedOut from backend
-  const fetchCheckedOut = async () => {
-    try {
-      const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
-      const checkOutdata = await checkOutResponse.json();
-      setCheckedOut(checkOutdata);
+  // const fetchCheckedOut = async () => {
+  //   try {
+  //     const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
+  //     const checkOutdata = await checkOutResponse.json();
+  //     setCheckedOut(checkOutdata);
 
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error fetching patients:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchPatients();
-    fetchCheckedOut();
-  }, []);
+  // useEffect(() => {
+  //   fetchPatients();
+  //   fetchCheckedOut();
+  // }, []);
 
   // Check-out patient
-  const handleCheckOut = async (patientId) => {
-    try {
-      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
-        method: "DELETE",
-      });
+  // const handleCheckOut = async (patientId) => {
+  //   try {
+  //     const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
+  //       method: "DELETE",
+  //     });
 
-      if (response.ok) {
-        setPatients((prev) => prev.filter((p) => p.id !== patientId));
-        return { success: true };
-      } else {
-        const error = await response.json();
-        return { success: false, error: error.error };
-      }
-    } catch (error) {
-      console.error("Error checking in patient:", error);
-      return { success: false, error: "Failed to check in patient" };
-    }
-  };
+  //     if (response.ok) {
+  //       setPatients((prev) => prev.filter((p) => p.id !== patientId));
+  //       return { success: true };
+  //     } else {
+  //       const error = await response.json();
+  //       return { success: false, error: error.error };
+  //     }
+  //   } catch (error) {
+  //     console.error("Error checking in patient:", error);
+  //     return { success: false, error: "Failed to check in patient" };
+  //   }
+  // };
 
   // Download All Patients Report
   const handleDownloadAll = () => {
@@ -145,7 +145,7 @@ function DoctorPanel() {
 
   return (
     <div className="w-full min-h-screen bg-gray-100">
-      <Navbar patients={patients} checkedOut={checkedOut} />
+      <Navbar />
 
       <div className="max-w-7xl mx-auto px-6 mt-6">
         {/* Download Button */}
@@ -170,9 +170,9 @@ function DoctorPanel() {
           </button>
         </div>
 
-        <AllPatientList />
+        {/* <AllPatientList /> */}
         {/* <CheckedOutList /> */}
-        {/* <TodayPatient /> */}
+        <TodayPatient />
 
       </div>
     </div>

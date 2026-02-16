@@ -59,9 +59,8 @@ function CheckedOutList() {
 
                 <td className="px-4 py-2 flex items-center gap-2">
                   <div
-                    className={`w-5 h-5 rounded-full ${
-                      p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
-                    }`}
+                    className={`w-5 h-5 rounded-full ${p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
+                      }`}
                   ></div>
                   {p.name}
                 </td>
@@ -71,11 +70,10 @@ function CheckedOutList() {
 
                 <td className="px-4 py-2">
                   <span
-                    className={`text-xs px-2 py-1 rounded ${
-                      p.type === "emergency"
+                    className={`text-xs px-2 py-1 rounded ${p.type === "emergency"
                         ? "bg-red-100 text-red-700"
                         : "bg-blue-100 text-blue-700"
-                    }`}
+                      }`}
                   >
                     {p.type === "emergency" ? "Emergency" : "Normal"}
                   </span>

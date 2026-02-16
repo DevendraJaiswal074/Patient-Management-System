@@ -26,7 +26,8 @@ function AdminCheckedIn() {
   if (loading) {
     return (
       <div className="w-full min-h-screen bg-gray-100">
-        <Navbar patients={[]} checkedOut={[]} />
+        <Navbar />
+
         <div className="max-w-7xl mx-auto px-6 mt-6">
           <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
             <p className="text-gray-500">Loading checked-in patients...</p>
