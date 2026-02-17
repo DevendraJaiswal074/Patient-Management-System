@@ -1,14 +1,9 @@
-const {
-  patientsFile,
-  checkedOutFile,
-  readJSON,
-  writeJSON,
-} = require("../services/fileService");
+const Patient = require("../models/Patient");
 
-// GET patients
-exports.getPatients = (req, res) => {
+// GET patients (checked-in)
+exports.getPatients = async (req, res) => {
   try {
-    const patients = readJSON(patientsFile);
+    const patients = await Patient.find({ status: "CheckedIn" }).sort({ createdAt: -1 });
     res.json(patients);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch patients" });
@@ -16,7 +11,7 @@ exports.getPatients = (req, res) => {
 };
 
 // ADD patient
-exports.addPatient = (req, res) => {
+exports.addPatient = async (req, res) => {
   const { name, age, phone, type } = req.body;
 
   if (!name || !age || !phone || !type) {
@@ -27,52 +22,43 @@ exports.addPatient = (req, res) => {
     return res.status(400).json({ error: "Age must be between 1 and 109" });
   }
 
-  const patients = readJSON(patientsFile);
-
-  const newPatient = {
-    id: Date.now(),
-    name,
-    age: Number(age),
-    phone,
-    type,
-    addedAt: new Date().toISOString(),
-  };
-
-  patients.push(newPatient);
-  writeJSON(patientsFile, patients);
-
-  res.status(201).json(newPatient);
+  try {
+    const newPatient = await Patient.create({
+      name,
+      age: Number(age),
+      phone,
+      type,
+    });
+    res.status(201).json(newPatient);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add patient" });
+  }
 };
 
-// CHECK-OUT patient (move from patients to checkedOut)
-exports.checkOutPatient = (req, res) => {
-  const id = parseInt(req.params.id);
+// CHECK-OUT patient (update status from CheckedIn to CheckedOut)
+exports.checkOutPatient = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
 
-  const patients = readJSON(patientsFile);
-  const checkedOut = readJSON(checkedOutFile);
+    patient.status = "CheckedOut";
+    patient.checkedOutAt = new Date();
+    await patient.save();
 
-  const index = patients.findIndex((p) => p.id === id);
-  if (index === -1) {
-    return res.status(404).json({ error: "Patient not found" });
+    res.json(patient);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to check out patient" });
   }
-
-  const [patient] = patients.splice(index, 1);
-  patient.checkedOutAt = new Date().toISOString();
-
-  checkedOut.push(patient);
-
-  writeJSON(patientsFile, patients);
-  writeJSON(checkedOutFile, checkedOut);
-
-  res.json(patient);
 };
 
 // GET checked-out patients
-exports.getCheckedOut = (req, res) => {
+exports.getCheckedOut = async (req, res) => {
   try {
-    const checkedOut = readJSON(checkedOutFile);
+    const checkedOut = await Patient.find({ status: "CheckedOut" }).sort({ checkedOutAt: -1 });
     res.json(checkedOut);
-  } catch {
-    res.status(500).json({ error: "Failed to fetch checked-in patients" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch checked-out patients" });
   }
 };

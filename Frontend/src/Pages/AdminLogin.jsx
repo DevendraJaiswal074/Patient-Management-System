@@ -26,7 +26,6 @@ const AdminLogin = () => {
     if (step === 1) {
       setStep(2);
     } else {
-      console.log("Admin Login:", formData);
       navigate("/admin-dashboard")
     }
   };

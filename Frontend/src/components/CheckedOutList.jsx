@@ -54,7 +54,7 @@ function CheckedOutList() {
 
           <tbody className="divide-y">
             {checkedOutPatients.map((p, i) => (
-              <tr key={p.id}>
+              <tr key={p._id}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 3,
+    "name": "Devendra Jaiswal",
+    "phone": "012-245-63789",
+    "age": 28,
+    "type": "emergency",
+    "checkedInAt": "2026-02-03T12:08:58.085Z"
+  },
+  {
+    "id": 5,
+    "name": "Suresh Agarwal",
+    "phone": "012-245-63789",
+    "age": 45,
+    "type": "normal",
+    "checkedInAt": "2026-02-03T12:51:29.232Z"
+  },
+  {
+    "id": 2,
+    "name": "Deepanshu Yadav",
+    "phone": "012-245-53789",
+    "age": 30,
+    "type": "normal",
+    "checkedInAt": "2026-02-03T13:12:04.961Z"
+  }
+]

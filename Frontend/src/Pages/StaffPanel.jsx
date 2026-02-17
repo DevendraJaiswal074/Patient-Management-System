@@ -70,23 +70,24 @@ function StaffPanel() {
     }
   };
 
-  // Check-in patient (remove from list and store in separate file)
+  // Check-out patient (update status from CheckedIn to CheckedOut)
   const handleCheckOut = async (patientId) => {
     try {
-      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
-        method: "DELETE",
+      const response = await fetch(`${backendUrl}/api/patients/${patientId}/checkout`, {
+        method: "PATCH",
       });
 
       if (response.ok) {
-        setPatients((prev) => prev.filter((p) => p.id !== patientId));
+        setPatients((prev) => prev.filter((p) => p._id !== patientId));
+        fetchCheckedOut();
         return { success: true };
       } else {
         const error = await response.json();
         return { success: false, error: error.error };
       }
     } catch (error) {
-      console.error("Error checking in patient:", error);
-      return { success: false, error: "Failed to check in patient" };
+      console.error("Error checking out patient:", error);
+      return { success: false, error: "Failed to check out patient" };
     }
   };
 

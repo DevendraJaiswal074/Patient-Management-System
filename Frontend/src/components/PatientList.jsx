@@ -42,7 +42,7 @@ const PatientList = ({ patients, onCheckOut, loading }) => {
 
           <tbody className="divide-y">
             {patients.map((p, i) => (
-              <tr key={p.id} className={p.type === "emergency" ? "bg-white" : ""}>
+              <tr key={p._id} className={p.type === "emergency" ? "bg-white" : ""}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">
@@ -72,13 +72,13 @@ const PatientList = ({ patients, onCheckOut, loading }) => {
 
                 <td className="px-4 py-2">
                   <button
-                    onClick={() => handleCheckOut(p.id)}
-                    disabled={checkingOut === p.id}
+                    onClick={() => handleCheckOut(p._id)}
+                    disabled={checkingOut === p._id}
                     className={`bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded transition-all ${
-                      checkingOut === p.id ? "opacity-50 cursor-not-allowed" : ""
+                      checkingOut === p._id ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
-                    {checkingOut === p.id ? "Checking..." : "Check out"}
+                    {checkingOut === p._id ? "Checking..." : "Check out"}
                   </button>
                 </td>
               </tr>

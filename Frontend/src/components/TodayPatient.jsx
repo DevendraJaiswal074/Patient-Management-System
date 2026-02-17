@@ -20,11 +20,11 @@ function TodayPatient({ onDataLoaded }) {
         const today = new Date().toDateString();
 
         const todayCheckedIn = patients
-          .filter((p) => new Date(p.addedAt).toDateString() === today)
+          .filter((p) => new Date(p.createdAt).toDateString() === today)
           .map((p) => ({ ...p, status: "Checked In" }));
 
         const todayCheckedOut = checkedOut
-          .filter((p) => new Date(p.addedAt).toDateString() === today)
+          .filter((p) => new Date(p.createdAt).toDateString() === today)
           .map((p) => ({ ...p, status: "Checked Out" }));
 
         setTodayPatients([...todayCheckedIn, ...todayCheckedOut]);
@@ -95,7 +95,7 @@ function TodayPatient({ onDataLoaded }) {
 
           <tbody className="divide-y">
             {filteredPatients.map((p, i) => (
-              <tr key={p.id}>
+              <tr key={p._id}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">

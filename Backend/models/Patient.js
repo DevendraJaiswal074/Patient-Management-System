@@ -6,7 +6,8 @@ const patientSchema = new mongoose.Schema(
     age: { type: Number, required: true },
     phone: { type: String, required: true },
     type: { type: String, enum: ["normal", "emergency"], required: true },
-    status: { type: String, default: "CheckedIn" }
+    status: { type: String, enum: ["CheckedIn", "CheckedOut"], default: "CheckedIn" },
+    checkedOutAt: { type: Date, default: null }
   },
   { timestamps: true }
 );
