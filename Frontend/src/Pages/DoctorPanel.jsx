@@ -3,7 +3,6 @@ import PatientList from "../components/PatientList";
 import Navbar from "../components/Navbar";
 import * as XLSX from "xlsx";
 
-// const API_URL = "http://localhost:5000/api";
 import { backendUrl } from "../App";
 import AllPatientList from "../components/AllPatientList";
 import CheckedOutList from "../components/CheckedOutList";
@@ -12,60 +11,7 @@ import TodayPatient from "../components/TodayPatient";
 function DoctorPanel() {
   const [patients, setPatients] = useState([]);
   const [checkedOut, setCheckedOut] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch patients
-  // const fetchPatients = async () => {
-  //   try {
-  //     const response = await fetch(`${backendUrl}/api/patients`);
-  //     const data = await response.json();
-  //     setPatients(data);
-
-  //   } catch (error) {
-  //     console.error("Error fetching patients:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // Fetch checkedOut from backend
-  // const fetchCheckedOut = async () => {
-  //   try {
-  //     const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
-  //     const checkOutdata = await checkOutResponse.json();
-  //     setCheckedOut(checkOutdata);
-
-  //   } catch (error) {
-  //     console.error("Error fetching patients:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchPatients();
-  //   fetchCheckedOut();
-  // }, []);
-
-  // Check-out patient
-  // const handleCheckOut = async (patientId) => {
-  //   try {
-  //     const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
-  //       method: "DELETE",
-  //     });
-
-  //     if (response.ok) {
-  //       setPatients((prev) => prev.filter((p) => p.id !== patientId));
-  //       return { success: true };
-  //     } else {
-  //       const error = await response.json();
-  //       return { success: false, error: error.error };
-  //     }
-  //   } catch (error) {
-  //     console.error("Error checking in patient:", error);
-  //     return { success: false, error: "Failed to check in patient" };
-  //   }
-  // };
+  // const [loading, setLoading] = useState(true);
 
   // Download All Patients Report
   const handleDownloadAll = () => {

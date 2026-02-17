@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import AllPatientList from "../components/AllPatientList";
 
+import * as XLSX from "xlsx";
+
 function AdminAllPatients() {
+
+  const [patients, setPatients] = useState([]);
+    const [checkedOut, setCheckedOut] = useState([]);
 
   // Download All Patients Report
   const handleDownloadAll = () => {

@@ -18,8 +18,7 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-blue-100">
       <div className="bg-white shadow-xl rounded-xl w-full max-w-md p-8">
-        
-        {/* Heading */}
+
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Sign In
         </h2>
@@ -27,10 +26,9 @@ export default function Signup() {
           Enter your account to manage patients and appointments.
         </p>
 
-        {/* Form */}
-        <form action={"/dashboard"} className="space-y-4">
-          
-        {/* Email */}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+
           <input
             type="email"
             name="email"
@@ -40,7 +38,7 @@ export default function Signup() {
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
-        {/* Password */}
+
           <input
             type="password"
             name="password"

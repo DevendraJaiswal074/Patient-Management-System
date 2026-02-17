@@ -13,37 +13,37 @@ function StaffPanel() {
   const [loading, setLoading] = useState(true);
 
   // Fetch patients from backend
-  // const fetchPatients = async () => {
-  //   try {
-  //     const response = await fetch(`${backendUrl}/api/patients`);
-  //     const data = await response.json();
-  //     setPatients(data);
+  const fetchPatients = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/patients`);
+      const data = await response.json();
+      setPatients(data);
 
-  //   } catch (error) {
-  //     console.error("Error fetching patients:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch checkedOut from backend
-  // const fetchCheckedOut = async () => {
-  //   try {
-  //     const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
-  //     const checkOutdata = await checkOutResponse.json();
-  //     setCheckedOut(checkOutdata);
+  const fetchCheckedOut = async () => {
+    try {
+      const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
+      const checkOutdata = await checkOutResponse.json();
+      setCheckedOut(checkOutdata);
 
-  //   } catch (error) {
-  //     console.error("Error fetching patients:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchPatients()
-  //   fetchCheckedOut()
-  // }, []);
+  useEffect(() => {
+    fetchPatients()
+    fetchCheckedOut()
+  }, []);
 
   // Add new patient
   const handleAddPatient = async (patientData) => {
