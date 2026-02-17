@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
 
-function AllPatientList() {
+function AllPatientList({ onDataLoaded }) {
   const [allPatients, setAllPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // "all" | "checked-in" | "checked-out"
@@ -21,6 +21,10 @@ function AllPatientList() {
         const checkedOutList = checkedOut.map((p) => ({ ...p, status: "Checked Out" }));
 
         setAllPatients([...checkedInList, ...checkedOutList]);
+
+        if (onDataLoaded) {
+          onDataLoaded(patients, checkedOut);
+        }
       } catch (error) {
         console.error("Error fetching patients:", error);
       } finally {

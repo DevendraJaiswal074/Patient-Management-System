@@ -9,6 +9,30 @@ import CheckedOutList from "../components/CheckedOutList";
 import TodayPatient from "../components/TodayPatient";
 
 function DoctorPanel() {
+
+  const [todayPatients, setTodayPatients] = useState([]);
+
+  const handleDownloadToday = () => {
+    if (todayPatients.length === 0) {
+      alert("No today's patient data available");
+      return;
+    }
+
+    const excelData = todayPatients.map((p, index) => ({
+      "S.No": index + 1,
+      "Patient Name": p.name,
+      Age: p.age,
+      "Phone Number": p.phone,
+      Type: p.type === "emergency" ? "Emergency" : "Normal",
+      Status: p.status,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Today Patients");
+    XLSX.writeFile(workbook, "Today_Patients_Report.xlsx");
+  };
+
   const [patients, setPatients] = useState([]);
   const [checkedOut, setCheckedOut] = useState([]);
   // const [loading, setLoading] = useState(true);
@@ -95,7 +119,7 @@ function DoctorPanel() {
 
       <div className="max-w-7xl mx-auto px-6 mt-6">
         {/* Download Button */}
-        <div className="flex justify-end gap-3 mb-4">
+        {/* <div className="flex justify-end gap-3 mb-4">
           <button
             onClick={handleDownloadAll}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
@@ -114,11 +138,23 @@ function DoctorPanel() {
           >
             Download Checked Out
           </button>
+        </div> */}
+
+
+        {/* Download Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleDownloadToday}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Download Today's Report
+          </button>
         </div>
+
 
         {/* <AllPatientList /> */}
         {/* <CheckedOutList /> */}
-        <TodayPatient />
+        <TodayPatient onDataLoaded={(data) => setTodayPatients(data)} />
 
       </div>
     </div>

@@ -126,7 +126,10 @@ function AdminAllPatients() {
           </Link>
         </div>
 
-        <AllPatientList />
+        <AllPatientList onDataLoaded={(checkedIn, checkedOutData) => {
+          setPatients(checkedIn);
+          setCheckedOut(checkedOutData);
+        }} />
       </div>
     </div>
   );

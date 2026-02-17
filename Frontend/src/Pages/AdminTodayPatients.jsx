@@ -1,14 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import TodayPatient from "../components/TodayPatient";
+import * as XLSX from "xlsx";
 
 function AdminTodayPatients() {
+  const [todayPatients, setTodayPatients] = useState([]);
+
+  const handleDownloadToday = () => {
+    if (todayPatients.length === 0) {
+      alert("No today's patient data available");
+      return;
+    }
+
+    const excelData = todayPatients.map((p, index) => ({
+      "S.No": index + 1,
+      "Patient Name": p.name,
+      Age: p.age,
+      "Phone Number": p.phone,
+      Type: p.type === "emergency" ? "Emergency" : "Normal",
+      Status: p.status,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Today Patients");
+    XLSX.writeFile(workbook, "Today_Patients_Report.xlsx");
+  };
+
   return (
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-6 mt-6">
+
+        {/* Download Button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleDownloadToday}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Download Today's Report
+          </button>
+        </div>
+
         <div className="mb-4">
           <Link
             to="/admin-dashboard"
@@ -21,7 +56,7 @@ function AdminTodayPatients() {
           </Link>
         </div>
 
-        <TodayPatient />
+        <TodayPatient onDataLoaded={(data) => setTodayPatients(data)} />
       </div>
     </div>
   );
