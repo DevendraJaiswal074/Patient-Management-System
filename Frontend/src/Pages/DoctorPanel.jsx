@@ -7,6 +7,7 @@ import { backendUrl } from "../App";
 import AllPatientList from "../components/AllPatientList";
 import CheckedOutList from "../components/CheckedOutList";
 import TodayPatient from "../components/TodayPatient";
+import DoctorNotes from "../components/DoctorNotes";
 
 function DoctorPanel() {
 
@@ -64,9 +65,35 @@ function DoctorPanel() {
       "Phone Number": p.phone,
       Type: p.type === "emergency" ? "Emergency" : "Normal",
       Status: p.status,
+      Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
+    // Apply column widths and header style
+    const applyFormatting = (ws) => {
+      ws["!cols"] = [
+        { wch: 6 }, // S.No
+        { wch: 28 }, // Patient Name
+        { wch: 6 }, // Age
+        { wch: 16 }, // Phone Number
+        { wch: 12 }, // Type
+        { wch: 14 }, // Status
+        { wch: 36 }, // Notes
+      ];
+      try {
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const cell_address = { c: C, r: range.s.r };
+          const cell_ref = XLSX.utils.encode_cell(cell_address);
+          if (!ws[cell_ref]) continue;
+          ws[cell_ref].s = Object.assign({}, ws[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+        }
+      } catch (e) {
+        // ignore formatting errors
+      }
+    };
+
+    applyFormatting(worksheet);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Today Patients");
     XLSX.writeFile(workbook, `D-${getCurrentDate()}.xlsx`);
@@ -91,6 +118,7 @@ function DoctorPanel() {
         "Phone Number": p.phone,
         Type: p.type,
         Status: "Checked In",
+        Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
       })),
       ...checkedOut.map((p, i) => ({
         "S.No": patients.length + i + 1,
@@ -99,10 +127,32 @@ function DoctorPanel() {
         "Phone Number": p.phone,
         Type: p.type,
         Status: "Checked Out",
+        Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
       })),
     ];
 
     const worksheet = XLSX.utils.json_to_sheet(allData);
+    const applyFormatting = (ws) => {
+      ws["!cols"] = [
+        { wch: 6 },
+        { wch: 28 },
+        { wch: 6 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 14 },
+        { wch: 36 },
+      ];
+      try {
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const cell_ref = XLSX.utils.encode_cell({ c: C, r: range.s.r });
+          if (!ws[cell_ref]) continue;
+          ws[cell_ref].s = Object.assign({}, ws[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+        }
+      } catch (e) {}
+    };
+
+    applyFormatting(worksheet);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "All Patients");
     XLSX.writeFile(workbook, `A-${getCurrentDate()}.xlsx`);
@@ -122,9 +172,31 @@ function DoctorPanel() {
       "Phone Number": p.phone,
       Type: p.type,
       Status: "Checked In",
+      Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const applyFormatting = (ws) => {
+      ws["!cols"] = [
+        { wch: 6 },
+        { wch: 28 },
+        { wch: 6 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 14 },
+        { wch: 36 },
+      ];
+      try {
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const cell_ref = XLSX.utils.encode_cell({ c: C, r: range.s.r });
+          if (!ws[cell_ref]) continue;
+          ws[cell_ref].s = Object.assign({}, ws[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+        }
+      } catch (e) {}
+    };
+
+    applyFormatting(worksheet);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked In");
     XLSX.writeFile(workbook, `CI-${getCurrentDate()}.xlsx`);
@@ -144,9 +216,30 @@ function DoctorPanel() {
       "Phone Number": p.phone,
       Type: p.type,
       Status: "Checked Out",
+      Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const applyFormatting = (ws) => {
+      ws["!cols"] = [
+        { wch: 6 },
+        { wch: 28 },
+        { wch: 6 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 14 },
+      ];
+      try {
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const cell_ref = XLSX.utils.encode_cell({ c: C, r: range.s.r });
+          if (!ws[cell_ref]) continue;
+          ws[cell_ref].s = Object.assign({}, ws[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+        }
+      } catch (e) {}
+    };
+
+    applyFormatting(worksheet);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out");
     XLSX.writeFile(workbook, `CO-${getCurrentDate()}.xlsx`);
@@ -156,21 +249,23 @@ function DoctorPanel() {
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="max-w-[95vw] mx-auto px-6 mt-6">
+      <div className="max-w-[95vw] mx-auto px-6 mt-8">
 
-        {/* Download Button */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={handleDownloadToday}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            Download Today's Report
-          </button>
+        {/* Header: title centered, download button aligned right */}
+        <div className="flex items-center justify-between mb-4 mt-2">
+          <div className="w-1/4" />
+          <h2 className="text-4xl font-bold text-gray-700 mb-0 text-center">
+            Doctor Dashboard
+          </h2>
+          <div className="w-1/4 flex justify-end">
+            <button
+              onClick={handleDownloadToday}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              Download Today's Report
+            </button>
+          </div>
         </div>
-
-        <h2 className="text-4xl font-bold text-gray-700 mb-4 text-center">
-          Doctor Dashboard
-        </h2>
 
         <div className="flex items-start gap-5">
           {/* Latest Checked-Out Patient Card */}
@@ -263,6 +358,8 @@ function DoctorPanel() {
                 )}
               </div>
             </div>
+            {/* Doctor Notes component (autosave & collapsible) */}
+            <DoctorNotes />
           </div>
 
           {/* Today's Patient List */}
