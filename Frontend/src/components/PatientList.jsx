@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PatientList = ({ patients, onCheckOut, loading }) => {
+const PatientList = ({ patients, onCheckOut, onEdit, loading }) => {
   const [checkingOut, setCheckingOut] = useState(null);
 
   const handleCheckOut = async (patientId) => {
@@ -70,7 +70,13 @@ const PatientList = ({ patients, onCheckOut, loading }) => {
                   </span>
                 </td>
 
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 flex gap-2">
+                  <button
+                    onClick={() => onEdit(p)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1.5 rounded transition-all"
+                  >
+                    Edit
+                  </button>
                   <button
                     onClick={() => handleCheckOut(p._id)}
                     disabled={checkingOut === p._id}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import AddPatient from "../components/AddPatient";
+import EditPatient from "../components/EditPatient";
 import PatientList from "../components/PatientList";
 
 import { backendUrl } from "../App";
@@ -11,6 +12,7 @@ function StaffPanel() {
   const [patients, setPatients] = useState([]);
   const [checkedOut, setCheckedOut] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingPatient, setEditingPatient] = useState(null);
 
   // Fetch patients from backend
   const fetchPatients = async () => {
@@ -70,6 +72,33 @@ function StaffPanel() {
     }
   };
 
+  // Edit patient
+  const handleEditPatient = async (patientId, patientData) => {
+    try {
+      const response = await fetch(`${backendUrl}/api/patients/${patientId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(patientData),
+      });
+
+      if (response.ok) {
+        const updatedPatient = await response.json();
+        setPatients((prev) =>
+          prev.map((p) => (p._id === patientId ? updatedPatient : p))
+        );
+        return { success: true };
+      } else {
+        const error = await response.json();
+        return { success: false, error: error.error };
+      }
+    } catch (error) {
+      console.error("Error editing patient:", error);
+      return { success: false, error: "Failed to update patient" };
+    }
+  };
+
   // Check-out patient (update status from CheckedIn to CheckedOut)
   const handleCheckOut = async (patientId) => {
     try {
@@ -103,17 +132,21 @@ function StaffPanel() {
           <PatientList
             patients={patients}
             onCheckOut={handleCheckOut}
+            onEdit={setEditingPatient}
             loading={loading}
           />
         </div>
       </div>
+
+      {editingPatient && (
+        <EditPatient
+          patient={editingPatient}
+          onEditPatient={handleEditPatient}
+          onCancel={() => setEditingPatient(null)}
+        />
+      )}
     </div>
   );
 }
 
 export default StaffPanel;
-
-
-
-
-

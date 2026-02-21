@@ -42,6 +42,48 @@ exports.addPatient = async (req, res) => {
   }
 };
 
+// UPDATE patient information
+exports.updatePatient = async (req, res) => {
+  try {
+    const { name, age, phone, type } = req.body;
+    const patientId = req.params.id;
+
+    // Validate required fields
+    if (!name || !age || !phone || !type) {
+      return res.status(400).json({ error: "All fields required" });
+    }
+
+    // Validate age
+    if (Number(age) <= 0 || Number(age) >= 110) {
+      return res.status(400).json({ error: "Age must be between 1 and 109" });
+    }
+
+    // Validate phone
+    if (String(phone).length !== 10) {
+      return res.status(400).json({ error: "Phone number must be 10 digits" });
+    }
+
+    const patient = await Patient.findByIdAndUpdate(
+      patientId,
+      {
+        name,
+        age: Number(age),
+        phone,
+        type,
+      },
+      { new: true }
+    );
+
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
+
+    res.json(patient);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update patient" });
+  }
+};
+
 // CHECK-OUT patient (update status from CheckedIn to CheckedOut)
 exports.checkOutPatient = async (req, res) => {
   try {
