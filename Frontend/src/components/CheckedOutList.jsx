@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
+import * as XLSX from "xlsx";
 
 function CheckedOutList() {
   const [checkedOutPatients, setCheckedOutPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [showDateFilter, setShowDateFilter] = useState(false);
 
   useEffect(() => {
     const fetchCheckedOut = async () => {
@@ -21,6 +25,79 @@ function CheckedOutList() {
     fetchCheckedOut();
   }, []);
 
+  // Helper function to check if a date falls within the selected range
+  const isDateInRange = (patientDate, from, to) => {
+    const pDate = new Date(patientDate);
+    const fromDateObj = from ? new Date(from) : null;
+    const toDateObj = to ? new Date(to) : null;
+
+    if (fromDateObj) {
+      fromDateObj.setHours(0, 0, 0, 0);
+      if (pDate < fromDateObj) return false;
+    }
+
+    if (toDateObj) {
+      toDateObj.setHours(23, 59, 59, 999);
+      if (pDate > toDateObj) return false;
+    }
+
+    return true;
+  };
+
+  // Clear date filters
+  const handleClearDateFilter = () => {
+    setFromDate("");
+    setToDate("");
+  };
+
+  // Helper function to safely format date
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "N/A";
+      }
+      return date.toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    } catch (error) {
+      return "N/A";
+    }
+  };
+
+  // Download filtered patients as Excel
+  const handleDownloadFilteredList = () => {
+    if (filteredPatients.length === 0) {
+      alert("No patients to download. Please select a date range.");
+      return;
+    }
+
+    const excelData = filteredPatients.map((p, index) => ({
+      "S.No": index + 1,
+      "Patient Name": p.name,
+      Age: p.age,
+      "Phone Number": p.phone,
+      "Created Date": formatDate(p.createdAt),
+      Type: p.type === "emergency" ? "Emergency" : "Normal",
+      Status: "Checked Out",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out Patients");
+    
+    const dateRange = `${fromDate || "Start"} to ${toDate || "End"}`;
+    XLSX.writeFile(workbook, `CheckedOut_Patients_${dateRange}.xlsx`);
+  };
+
+  // Filter checked-out patients by date range
+  const filteredPatients = checkedOutPatients.filter((p) =>
+    isDateInRange(p.createdAt, fromDate, toDate)
+  );
+
   if (loading) {
     return (
       <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
@@ -31,13 +108,65 @@ function CheckedOutList() {
 
   return (
     <div className="bg-white shadow border border-black/30 rounded">
-      <div className="text-center px-4 py-2 border-b border-black/30 rounded font-bold text-xl text-gray-700">
-        Checked Out Patients
+      <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-black/30">
+        <h2 className="font-bold text-xl text-gray-700">Checked Out Patients</h2>
+        <button
+          onClick={() => setShowDateFilter(!showDateFilter)}
+          className="text-xs px-3 py-1.5 rounded bg-purple-600 text-white hover:bg-purple-700 transition-all"
+        >
+          📅 {showDateFilter ? "Hide" : "Date Filter"}
+        </button>
       </div>
 
-      {checkedOutPatients.length === 0 ? (
+      {/* Date Filter Section */}
+      {showDateFilter && (
+        <div className="px-4 py-4 border-b border-black/30 bg-gray-50 flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-600">From Date:</label>
+            <input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-600">To Date:</label>
+            <input
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
+          <button
+            onClick={handleClearDateFilter}
+            className="text-xs px-3 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition-all"
+          >
+            Clear Dates
+          </button>
+
+          {(fromDate || toDate) && (
+            <>
+              <button
+                onClick={handleDownloadFilteredList}
+                className="text-xs px-3 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition-all"
+              >
+                📥 Download
+              </button>
+              <span className="text-sm text-gray-600 font-medium">
+                Showing {filteredPatients.length} of {checkedOutPatients.length} patients
+              </span>
+            </>
+          )}
+        </div>
+      )}
+
+      {filteredPatients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
-          No checked-out patients found.
+          Download Date-Wise Patient List. 
         </div>
       ) : (
         <table className="w-full text-sm">
@@ -47,13 +176,14 @@ function CheckedOutList() {
               <th className="px-4 py-2 text-left">Patient Name</th>
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
+              <th className="px-4 py-2 text-left">Date</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Status</th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
-            {checkedOutPatients.map((p, i) => (
+            {filteredPatients.map((p, i) => (
               <tr key={p._id}>
                 <td className="px-4 py-3">{i + 1}.</td>
 
@@ -67,6 +197,10 @@ function CheckedOutList() {
 
                 <td className="px-4 py-2">{p.age}</td>
                 <td className="px-4 py-2">{p.phone}</td>
+
+                <td className="px-4 py-2 text-sm text-gray-600">
+                  {formatDate(p.createdAt)}
+                </td>
 
                 <td className="px-4 py-2">
                   <span
