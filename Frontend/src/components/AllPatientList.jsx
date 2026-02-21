@@ -8,6 +8,9 @@ function AllPatientList({ onDataLoaded }) {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [showDateFilter, setShowDateFilter] = useState(false);
+  const [search, setSearch] = useState("");
+  const [openId, setOpenId] = useState(null);
+  const [notesExist, setNotesExist] = useState({});
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -23,6 +26,7 @@ function AllPatientList({ onDataLoaded }) {
         const checkedInList = patients.map((p) => ({ ...p, status: "Checked In" }));
         const checkedOutList = checkedOut.map((p) => ({ ...p, status: "Checked Out" }));
 
+        // keep checked-in then checked-out (consistent with admin view)
         setAllPatients([...checkedInList, ...checkedOutList]);
 
         if (onDataLoaded) {
@@ -37,6 +41,19 @@ function AllPatientList({ onDataLoaded }) {
 
     fetchAll();
   }, []);
+
+  // update notes existence map when patients change
+  useEffect(() => {
+    const map = {};
+    allPatients.forEach((p) => {
+      try {
+        map[p._id] = !!localStorage.getItem(`patient_notes_${p._id}`);
+      } catch (e) {
+        map[p._id] = false;
+      }
+    });
+    setNotesExist(map);
+  }, [allPatients]);
 
   // Helper function to check if a date falls within the selected range
   const isDateInRange = (patientDate, from, to) => {
@@ -92,6 +109,16 @@ function AllPatientList({ onDataLoaded }) {
           )
           .filter((p) => isDateInRange(p.createdAt, fromDate, toDate));
 
+  // apply search filter (name or phone)
+  const searchedPatients = filteredPatients.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      (p.name && p.name.toLowerCase().includes(q)) ||
+      (p.phone && String(p.phone).toLowerCase().includes(q))
+    );
+  });
+
   if (loading) {
     return (
       <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
@@ -104,6 +131,14 @@ function AllPatientList({ onDataLoaded }) {
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-black/30">
         <h2 className="font-bold text-xl text-gray-700">All Patients</h2>
+        <div className="flex items-center gap-3">
+          <input
+            placeholder="Search by name or phone..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none w-64"
+          />
+        </div>
         <div className="flex gap-2 flex-wrap">
           {["all", "checked-in", "checked-out"].map((f) => (
             <button
@@ -165,7 +200,7 @@ function AllPatientList({ onDataLoaded }) {
         </div>
       )}
 
-      {filteredPatients.length === 0 ? (
+      {searchedPatients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">No patients found.</div>
       ) : (
         <table className="w-full text-sm">
@@ -178,12 +213,14 @@ function AllPatientList({ onDataLoaded }) {
               <th className="px-4 py-2 text-left">Date</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Note</th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
-            {filteredPatients.map((p, i) => (
-              <tr key={p._id}>
+            {searchedPatients.map((p, i) => (
+              <React.Fragment key={p._id}>
+                <tr>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">
@@ -225,7 +262,40 @@ function AllPatientList({ onDataLoaded }) {
                     {p.status}
                   </span>
                 </td>
+
+                <td className="px-4 py-2">
+                  <button
+                    onClick={() => setOpenId(openId === p._id ? null : p._id)}
+                    title="Patient notes"
+                    className="p-1 rounded hover:bg-gray-100"
+                  >
+                    {notesExist[p._id] ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7l-4-4H5z" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.464.263l-4 1a1 1 0 01-1.213-1.213l1-4a1 1 0 01.263-.464l9.9-9.9a2 2 0 012.828 0z" />
+                      </svg>
+                    )}
+                  </button>
+                </td>
               </tr>
+
+              {openId === p._id && (
+                <tr>
+                  <td colSpan={8} className="p-0 border-b">
+                    <div className="p-3 bg-gray-50">
+                      <textarea
+                        value={localStorage.getItem(`patient_notes_${p._id}`) || ""}
+                        readOnly
+                        className="w-full p-2 border border-gray-200 rounded text-sm bg-white"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
             ))}
           </tbody>
         </table>
