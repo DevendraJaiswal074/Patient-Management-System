@@ -15,6 +15,7 @@ import AdminCheckedIn from './Pages/AdminCheckedIn';
 import AdminTodayPatients from './Pages/AdminTodayPatients';
 import AdminGenerateIDs from './Pages/AdminGenerateIDs';
 import AdminFiterDownload from './Pages/AdminFiterDownload';
+import AdminDeletePatients from './Pages/AdminDeletePatients';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -38,6 +39,7 @@ function App() {
         <Route path='/admin-dashboard/checked-in' element={<AdminCheckedIn />} />
         <Route path='/admin-dashboard/today-patients' element={<AdminTodayPatients />} />    
         <Route path='/admin-dashboard/generate-ids' element={<AdminGenerateIDs />} />
+        <Route path='/admin-dashboard/delete-patients' element={<AdminDeletePatients />} />
       </Routes>
     </div>
   )

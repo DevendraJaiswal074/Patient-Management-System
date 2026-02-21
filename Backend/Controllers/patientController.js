@@ -70,6 +70,81 @@ exports.getCheckedOut = async (req, res) => {
   }
 };
 
+// GET all patients (both CheckedIn and CheckedOut)
+exports.getAllPatients = async (req, res) => {
+  try {
+    const patients = await Patient.find().sort({ createdAt: -1 });
+    res.json(patients);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch patients" });
+  }
+};
+
+// DELETE a single patient by ID (any status)
+exports.deletePatientById = async (req, res) => {
+  try {
+    const patient = await Patient.findByIdAndDelete(req.params.id);
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
+    res.json({ message: "Patient deleted successfully", patient });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete patient" });
+  }
+};
+
+// DELETE patients by date (all patients created on a specific date)
+exports.deletePatientsByDate = async (req, res) => {
+  try {
+    const { date } = req.body;
+    if (!date) {
+      return res.status(400).json({ error: "Date is required" });
+    }
+
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const result = await Patient.deleteMany({
+      createdAt: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    res.json({
+      message: `${result.deletedCount} patients deleted for ${date}`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete patients by date" });
+  }
+};
+
+// DELETE patients by date range
+exports.deletePatientsByDateRange = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: "Start date and end date are required" });
+    }
+
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    const result = await Patient.deleteMany({
+      createdAt: { $gte: start, $lte: end },
+    });
+
+    res.json({
+      message: `${result.deletedCount} patients deleted from ${startDate} to ${endDate}`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete patients by date range" });
+  }
+};
+
 // DELETE patients by batch (for checked-in)
 exports.deletePatientsBatch = async (req, res) => {
   try {
