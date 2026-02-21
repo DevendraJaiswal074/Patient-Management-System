@@ -14,6 +14,7 @@ import AdminAllPatients from './Pages/AdminAllPatients';
 import AdminCheckedIn from './Pages/AdminCheckedIn';
 import AdminTodayPatients from './Pages/AdminTodayPatients';
 import AdminGenerateIDs from './Pages/AdminGenerateIDs';
+import AdminFiterDownload from './Pages/AdminFiterDownload';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
