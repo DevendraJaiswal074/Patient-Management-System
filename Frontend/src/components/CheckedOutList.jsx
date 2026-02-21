@@ -68,6 +68,13 @@ function CheckedOutList() {
     }
   };
 
+  // Helper function to convert HTML date input to DD-MM-YYYY format
+  const formatDateForFilename = (htmlDate) => {
+    if (!htmlDate) return "";
+    const [year, month, day] = htmlDate.split("-");
+    return `${day}-${month}-${year}`;
+  };
+
   // Download filtered patients as Excel
   const handleDownloadFilteredList = () => {
     if (filteredPatients.length === 0) {
@@ -89,8 +96,10 @@ function CheckedOutList() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out Patients");
 
-    const dateRange = `${fromDate || "Start"} to ${toDate || "End"}`;
-    XLSX.writeFile(workbook, `CheckedOut_Patients_${dateRange}.xlsx`);
+    const fromDateFormatted = formatDateForFilename(fromDate);
+    const toDateFormatted = formatDateForFilename(toDate);
+    const dateRange = `D-${fromDateFormatted} to ${toDateFormatted}`;
+    XLSX.writeFile(workbook, `${dateRange}.xlsx`);
   };
 
   // Filter checked-out patients by date range

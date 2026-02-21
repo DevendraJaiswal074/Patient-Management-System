@@ -10,6 +10,15 @@ function AdminAllPatients() {
   const [patients, setPatients] = useState([]);
     const [checkedOut, setCheckedOut] = useState([]);
 
+  // Helper function to get current date in DD-MM-YYYY format
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   // Download All Patients Report
   const handleDownloadAll = () => {
     if (patients.length === 0 && checkedOut.length === 0) {
@@ -39,7 +48,7 @@ function AdminAllPatients() {
     const worksheet = XLSX.utils.json_to_sheet(allData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "All Patients");
-    XLSX.writeFile(workbook, "All_Patients_Report.xlsx");
+    XLSX.writeFile(workbook, `A-${getCurrentDate()}.xlsx`);
   };
 
   return (

@@ -12,6 +12,15 @@ function DoctorPanel() {
 
   const [todayPatients, setTodayPatients] = useState([]);
 
+  // Helper function to get current date in DD/MM/YYYY format
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const handleDownloadToday = () => {
     if (todayPatients.length === 0) {
       alert("No today's patient data available");
@@ -30,7 +39,7 @@ function DoctorPanel() {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Today Patients");
-    XLSX.writeFile(workbook, "Today_Patients_Report.xlsx");
+    XLSX.writeFile(workbook, `D-${getCurrentDate()}.xlsx`);
   };
 
   const [patients, setPatients] = useState([]);
@@ -66,7 +75,7 @@ function DoctorPanel() {
     const worksheet = XLSX.utils.json_to_sheet(allData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "All Patients");
-    XLSX.writeFile(workbook, "All_Patients_Report.xlsx");
+    XLSX.writeFile(workbook, `A-${getCurrentDate()}.xlsx`);
   };
 
   // Download Checked-In Patients Report
@@ -88,7 +97,7 @@ function DoctorPanel() {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked In");
-    XLSX.writeFile(workbook, "CheckedIn_Report.xlsx");
+    XLSX.writeFile(workbook, `CI-${getCurrentDate()}.xlsx`);
   };
 
   // Download Checked-Out Patients Report
@@ -110,7 +119,7 @@ function DoctorPanel() {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out");
-    XLSX.writeFile(workbook, "CheckedOut_Report.xlsx");
+    XLSX.writeFile(workbook, `CO-${getCurrentDate()}.xlsx`);
   };
 
   return (
