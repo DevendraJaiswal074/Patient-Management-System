@@ -34,6 +34,7 @@ function AdminAllPatients() {
         "Phone Number": p.phone,
         Type: p.type,
         Status: "Checked In",
+        Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
       })),
       ...checkedOut.map((p, i) => ({
         "S.No": patients.length + i + 1,
@@ -42,10 +43,30 @@ function AdminAllPatients() {
         "Phone Number": p.phone,
         Type: p.type,
         Status: "Checked Out",
+        Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
       })),
     ];
 
     const worksheet = XLSX.utils.json_to_sheet(allData);
+    // apply column widths and header styling
+    try {
+      worksheet["!cols"] = [
+        { wch: 6 }, // S.No
+        { wch: 28 }, // Patient Name
+        { wch: 6 }, // Age
+        { wch: 16 }, // Phone Number
+        { wch: 12 }, // Type
+        { wch: 14 }, // Status
+        { wch: 36 }, // Notes
+      ];
+      const range = XLSX.utils.decode_range(worksheet['!ref']);
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cell_ref = XLSX.utils.encode_cell({ c: C, r: range.s.r });
+        if (!worksheet[cell_ref]) continue;
+        worksheet[cell_ref].s = Object.assign({}, worksheet[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+      }
+    } catch (e) {}
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "All Patients");
     XLSX.writeFile(workbook, `A-${getCurrentDate()}.xlsx`);
