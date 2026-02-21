@@ -5,6 +5,8 @@ import * as XLSX from "xlsx";
 function CheckedOutList() {
   const [checkedOutPatients, setCheckedOutPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openId, setOpenId] = useState(null);
+  const [notesExist, setNotesExist] = useState({});
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [showDateFilter, setShowDateFilter] = useState(false);
@@ -15,6 +17,16 @@ function CheckedOutList() {
         const response = await fetch(`${backendUrl}/api/checked-out`);
         const data = await response.json();
         setCheckedOutPatients(data);
+        // build notes existence map
+        const map = {};
+        data.forEach((p) => {
+          try {
+            map[p._id] = !!localStorage.getItem(`patient_notes_${p._id}`);
+          } catch (e) {
+            map[p._id] = false;
+          }
+        });
+        setNotesExist(map);
       } catch (error) {
         console.error("Error fetching checked-out patients:", error);
       } finally {
@@ -90,9 +102,29 @@ function CheckedOutList() {
       "Created Date": formatDate(p.createdAt),
       Type: p.type === "emergency" ? "Emergency" : "Normal",
       Status: "Checked Out",
+      Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
+    // formatting
+    try {
+      worksheet["!cols"] = [
+        { wch: 6 },
+        { wch: 28 },
+        { wch: 6 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 12 },
+        { wch: 36 },
+      ];
+      const range = XLSX.utils.decode_range(worksheet['!ref']);
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cell_ref = XLSX.utils.encode_cell({ c: C, r: range.s.r });
+        if (!worksheet[cell_ref]) continue;
+        worksheet[cell_ref].s = Object.assign({}, worksheet[cell_ref].s, { font: { bold: true }, alignment: { horizontal: "center" } });
+      }
+    } catch (e) {}
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out Patients");
 
@@ -191,14 +223,16 @@ function CheckedOutList() {
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
               <th className="px-4 py-2 text-left">Date</th>
-              <th className="px-4 py-2 text-left">Type</th>
-              <th className="px-4 py-2 text-left">Status</th>
+                  <th className="px-4 py-2 text-left">Type</th>
+                  <th className="px-4 py-2 text-left">Status</th>
+                  <th className="px-4 py-2 text-left">Note</th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
-            {filteredPatients.map((p, i) => (
-              <tr key={p._id}>
+                {filteredPatients.map((p, i) => (
+                  <React.Fragment key={p._id}>
+                    <tr>
                 <td className="px-4 py-3">{i + 1}.</td>
 
                 <td className="px-4 py-2 flex items-center gap-2">
@@ -234,7 +268,40 @@ function CheckedOutList() {
                     Checked Out
                   </span>
                 </td>
-              </tr>
+
+                <td className="px-4 py-2">
+                  <button
+                    onClick={() => setOpenId(openId === p._id ? null : p._id)}
+                    title="Patient notes"
+                    className="p-1 rounded hover:bg-gray-100"
+                  >
+                    {notesExist[p._id] ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7l-4-4H5z" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.464.263l-4 1a1 1 0 01-1.213-1.213l1-4a1 1 0 01.263-.464l9.9-9.9a2 2 0 012.828 0z" />
+                      </svg>
+                    )}
+                  </button>
+                </td>
+                </tr>
+
+                {openId === p._id && (
+                  <tr>
+                    <td colSpan={8} className="p-0 border-b">
+                      <div className="p-3 bg-gray-50">
+                        <textarea
+                          value={localStorage.getItem(`patient_notes_${p._id}`) || ""}
+                          readOnly
+                          className="w-full p-2 border border-gray-200 rounded text-sm bg-white"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
