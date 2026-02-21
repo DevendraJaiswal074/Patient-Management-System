@@ -119,8 +119,8 @@ Patient-Management-System/
 │   │   │   ├── AdminPanel.jsx          # Admin dashboard
 │   │   │   ├── AdminAllPatients.jsx    # All patients view
 │   │   │   ├── AdminCheckedIn.jsx      # Checked-in patients
-│   │   │   ├── AdminCheckedOut.jsx     # Checked-out patients
-│   │   │   └── AdminTodayPatients.jsx  # Today's patients
+│   │   │   ├── AdminFiterDownload.jsx  # Checked-out patients with filter & download
+│   │   │   └── DeleteData.jsx          # Delete patients by date range
 │   │   ├── context/
 │   │   │   └── PatientContext.jsx      # Global patient context
 │   │   ├── assets/                     # Images and assets

@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../Controllers/patientController");
 
+// Delete routes (must come before specific ID routes)
+router.post("/patients/delete-batch", controller.deletePatientsBatch);
+router.post("/checked-out/delete-batch", controller.deleteCheckedOutBatch);
+
+// Other routes
 router.get("/patients", controller.getPatients);
 router.post("/patients", controller.addPatient);
 router.patch("/patients/:id/checkout", controller.checkOutPatient);

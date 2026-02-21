@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import CheckedOutList from "../components/CheckedOutList";
 
-function AdminCheckedOut() {
+function AdminFiterDownload() {
   return (
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
@@ -27,4 +27,4 @@ function AdminCheckedOut() {
   );
 }
 
-export default AdminCheckedOut;
+export default AdminFiterDownload;

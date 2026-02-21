@@ -88,14 +88,14 @@ function CheckedOutList() {
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out Patients");
-    
+
     const dateRange = `${fromDate || "Start"} to ${toDate || "End"}`;
     XLSX.writeFile(workbook, `CheckedOut_Patients_${dateRange}.xlsx`);
   };
 
   // Filter checked-out patients by date range
   const filteredPatients = checkedOutPatients.filter((p) =>
-    isDateInRange(p.createdAt, fromDate, toDate)
+    isDateInRange(p.createdAt, fromDate, toDate),
   );
 
   if (loading) {
@@ -109,7 +109,7 @@ function CheckedOutList() {
   return (
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-black/30">
-        <h2 className="font-bold text-xl text-gray-700">Checked Out Patients</h2>
+        <h2 className="font-bold text-xl text-gray-700">Download & View</h2>
         <button
           onClick={() => setShowDateFilter(!showDateFilter)}
           className="text-xs px-3 py-1.5 rounded bg-purple-600 text-white hover:bg-purple-700 transition-all"
@@ -122,7 +122,9 @@ function CheckedOutList() {
       {showDateFilter && (
         <div className="px-4 py-4 border-b border-black/30 bg-gray-50 flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-600">From Date:</label>
+            <label className="text-sm font-medium text-gray-600">
+              From Date:
+            </label>
             <input
               type="date"
               value={fromDate}
@@ -132,7 +134,9 @@ function CheckedOutList() {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-600">To Date:</label>
+            <label className="text-sm font-medium text-gray-600">
+              To Date:
+            </label>
             <input
               type="date"
               value={toDate}
@@ -157,7 +161,8 @@ function CheckedOutList() {
                 📥 Download
               </button>
               <span className="text-sm text-gray-600 font-medium">
-                Showing {filteredPatients.length} of {checkedOutPatients.length} patients
+                Showing {filteredPatients.length} of {checkedOutPatients.length}{" "}
+                patients
               </span>
             </>
           )}
@@ -166,7 +171,7 @@ function CheckedOutList() {
 
       {filteredPatients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
-          Download Date-Wise Patient List. 
+          Download Date-Wise Patient List.
         </div>
       ) : (
         <table className="w-full text-sm">
@@ -189,8 +194,9 @@ function CheckedOutList() {
 
                 <td className="px-4 py-2 flex items-center gap-2">
                   <div
-                    className={`w-5 h-5 rounded-full ${p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
-                      }`}
+                    className={`w-5 h-5 rounded-full ${
+                      p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
+                    }`}
                   ></div>
                   {p.name}
                 </td>
@@ -204,10 +210,11 @@ function CheckedOutList() {
 
                 <td className="px-4 py-2">
                   <span
-                    className={`text-xs px-2 py-1 rounded ${p.type === "emergency"
+                    className={`text-xs px-2 py-1 rounded ${
+                      p.type === "emergency"
                         ? "bg-red-100 text-red-700"
                         : "bg-blue-100 text-blue-700"
-                      }`}
+                    }`}
                   >
                     {p.type === "emergency" ? "Emergency" : "Normal"}
                   </span>
