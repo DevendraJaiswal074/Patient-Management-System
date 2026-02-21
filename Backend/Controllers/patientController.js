@@ -1,4 +1,5 @@
 const Patient = require("../models/Patient");
+const { sendAppointmentConfirmation } = require("../services/messagingService");
 
 // GET patients (checked-in)
 exports.getPatients = async (req, res) => {
@@ -29,6 +30,12 @@ exports.addPatient = async (req, res) => {
       phone,
       type,
     });
+
+    // Send confirmation message (non-blocking)
+    sendAppointmentConfirmation(phone, name, type).catch((err) =>
+      console.error("Failed to send confirmation:", err.message)
+    );
+
     res.status(201).json(newPatient);
   } catch (err) {
     res.status(500).json({ error: "Failed to add patient" });
