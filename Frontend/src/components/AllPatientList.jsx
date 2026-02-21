@@ -122,7 +122,7 @@ function AllPatientList({ onDataLoaded }) {
             onClick={() => setShowDateFilter(!showDateFilter)}
             className="text-xs px-3 py-1.5 rounded bg-purple-600 text-white hover:bg-purple-700 transition-all"
           >
-            📅 {showDateFilter ? "Hide" : "Date Filter"}
+            📅 {showDateFilter ? "Hide" : "Filter by Date"}
           </button>
         </div>
       </div>

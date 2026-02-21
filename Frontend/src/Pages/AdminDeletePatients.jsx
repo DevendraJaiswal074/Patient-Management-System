@@ -15,6 +15,24 @@ function AdminDeletePatients() {
   const [endDate, setEndDate] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
   const [toast, setToast] = useState(null);
+  const [confirmPopup, setConfirmPopup] = useState(null);
+
+  // Show confirmation popup (returns a promise)
+  const showConfirm = (message, detail = "") => {
+    return new Promise((resolve) => {
+      setConfirmPopup({ message, detail, resolve });
+    });
+  };
+
+  const handleConfirm = () => {
+    confirmPopup?.resolve(true);
+    setConfirmPopup(null);
+  };
+
+  const handleCancel = () => {
+    confirmPopup?.resolve(false);
+    setConfirmPopup(null);
+  };
 
   // Fetch all patients
   const fetchPatients = async () => {
@@ -41,8 +59,11 @@ function AdminDeletePatients() {
 
   // Delete single patient
   const handleDeleteSingle = async (id, name) => {
-    if (!window.confirm(`Are you sure you want to delete patient "${name}"?`))
-      return;
+    const confirmed = await showConfirm(
+      `Delete patient "${name}"?`,
+      "This action cannot be undone."
+    );
+    if (!confirmed) return;
 
     setActionLoading(true);
     try {
@@ -66,12 +87,11 @@ function AdminDeletePatients() {
   // Delete selected patients (batch)
   const handleDeleteSelected = async () => {
     if (selectedIds.length === 0) return;
-    if (
-      !window.confirm(
-        `Are you sure you want to delete ${selectedIds.length} selected patient(s)?`
-      )
-    )
-      return;
+    const confirmed = await showConfirm(
+      `Delete ${selectedIds.length} selected patient(s)?`,
+      "All selected patient records will be permanently removed."
+    );
+    if (!confirmed) return;
 
     setActionLoading(true);
     try {
@@ -119,12 +139,11 @@ function AdminDeletePatients() {
   // Delete by single date
   const handleDeleteByDate = async () => {
     if (!singleDate) return;
-    if (
-      !window.confirm(
-        `Are you sure you want to delete ALL patients from ${singleDate}?`
-      )
-    )
-      return;
+    const confirmed = await showConfirm(
+      `Delete ALL patients from ${singleDate}?`,
+      "Every patient record on this date will be permanently removed."
+    );
+    if (!confirmed) return;
 
     setActionLoading(true);
     try {
@@ -155,12 +174,11 @@ function AdminDeletePatients() {
       showToast("Start date must be before end date", "error");
       return;
     }
-    if (
-      !window.confirm(
-        `Are you sure you want to delete ALL patients from ${startDate} to ${endDate}?`
-      )
-    )
-      return;
+    const confirmed = await showConfirm(
+      `Delete ALL patients from ${startDate} to ${endDate}?`,
+      "Every patient record in this date range will be permanently removed."
+    );
+    if (!confirmed) return;
 
     setActionLoading(true);
     try {
@@ -233,6 +251,58 @@ function AdminDeletePatients() {
   return (
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
+
+      {/* Confirmation Popup */}
+      {confirmPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6 animate-scale-in">
+            <div className="flex flex-col items-center text-center">
+              {/* Icon */}
+              <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  className="w-7 h-7 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </div>
+
+              {/* Message */}
+              <h3 className="text-lg font-bold text-gray-800 mb-1">
+                {confirmPopup.message}
+              </h3>
+              {confirmPopup.detail && (
+                <p className="text-sm text-gray-500 mb-6">
+                  {confirmPopup.detail}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex gap-3 w-full">
+                <button
+                  onClick={handleCancel}
+                  className="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  className="flex-1 py-2.5 px-4 bg-red-600 text-white text-sm font-medium rounded-xl hover:bg-red-700 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast */}
       {toast && (
