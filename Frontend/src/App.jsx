@@ -14,6 +14,7 @@ import AdminAllPatients from './Pages/AdminAllPatients';
 import AdminCheckedOut from './Pages/AdminCheckedOut';
 import AdminCheckedIn from './Pages/AdminCheckedIn';
 import AdminTodayPatients from './Pages/AdminTodayPatients';
+import AdminGenerateIDs from './Pages/AdminGenerateIDs';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -36,6 +37,7 @@ function App() {
         <Route path='/admin-dashboard/checked-out' element={<AdminCheckedOut />} />
         <Route path='/admin-dashboard/checked-in' element={<AdminCheckedIn />} />
         <Route path='/admin-dashboard/today-patients' element={<AdminTodayPatients />} />    
+        <Route path='/admin-dashboard/generate-ids' element={<AdminGenerateIDs />} />
       </Routes>
     </div>
   )

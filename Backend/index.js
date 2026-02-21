@@ -7,12 +7,14 @@ dotenv.config();
 connectDB();
 
 const patientRoutes = require("./Routes/patientRoutes");
+const credentialRoutes = require("./Routes/credentialRoutes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.use("/api", patientRoutes);
+app.use("/api", credentialRoutes);
 
 const PORT = process.env.PORT || 5000;
 
