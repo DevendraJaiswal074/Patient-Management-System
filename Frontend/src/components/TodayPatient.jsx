@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
+import PatientNotes from "./PatientNotes";
 
 function TodayPatient({ onDataLoaded }) {
   const [todayPatients, setTodayPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [openId, setOpenId] = useState(null);
+  const [notesExist, setNotesExist] = useState({});
 
   useEffect(() => {
     const fetchTodayPatients = async () => {
@@ -27,10 +30,12 @@ function TodayPatient({ onDataLoaded }) {
           .filter((p) => new Date(p.createdAt).toDateString() === today)
           .map((p) => ({ ...p, status: "Checked Out" }));
 
-        setTodayPatients([...todayCheckedIn, ...todayCheckedOut]);
+        // Show checked-out patients first, then checked-in
+        const combined = [...todayCheckedOut, ...todayCheckedIn];
+        setTodayPatients(combined);
 
         if (onDataLoaded) {
-          onDataLoaded([...todayCheckedIn, ...todayCheckedOut]);
+          onDataLoaded(combined);
         }
       } catch (error) {
         console.error("Error fetching today's patients:", error);
@@ -41,6 +46,20 @@ function TodayPatient({ onDataLoaded }) {
 
     fetchTodayPatients();
   }, []);
+
+  // update notes existence map when patients change
+  useEffect(() => {
+    const map = {};
+    todayPatients.forEach((p) => {
+      try {
+        const key = `patient_notes_${p._id}`;
+        map[p._id] = !!localStorage.getItem(key);
+      } catch (e) {
+        map[p._id] = false;
+      }
+    });
+    setNotesExist(map);
+  }, [todayPatients]);
 
   const filteredPatients =
     filter === "all"
@@ -90,50 +109,92 @@ function TodayPatient({ onDataLoaded }) {
               <th className="px-4 py-2 text-left">Phone Number</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Note</th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
             {filteredPatients.map((p, i) => (
-              <tr key={p._id}>
-                <td className="px-4 py-3">{i + 1}.</td>
+              <React.Fragment key={p._id}>
+                <tr>
+                  <td className="px-4 py-3">{i + 1}.</td>
 
-                <td className="px-4 py-2 flex items-center gap-2">
-                  <div
-                    className={`w-5 h-5 rounded-full ${
-                      p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
-                    }`}
-                  ></div>
-                  {p.name}
-                </td>
+                  <td className="px-4 py-2 flex items-center gap-2">
+                    <div
+                      className={`w-5 h-5 rounded-full ${
+                        p.type === "emergency" ? "bg-red-500" : "bg-sky-500"
+                      }`}
+                    ></div>
+                    {p.name}
+                  </td>
 
-                <td className="px-4 py-2">{p.age}</td>
-                <td className="px-4 py-2">{p.phone}</td>
+                  <td className="px-4 py-2">{p.age}</td>
+                  <td className="px-4 py-2">{p.phone}</td>
 
-                <td className="px-4 py-2">
-                  <span
-                    className={`text-xs px-2 py-1 rounded ${
-                      p.type === "emergency"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {p.type === "emergency" ? "Emergency" : "Normal"}
-                  </span>
-                </td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`text-xs px-2 py-1 rounded ${
+                        p.type === "emergency"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-blue-100 text-blue-700"
+                      }`}
+                    >
+                      {p.type === "emergency" ? "Emergency" : "Normal"}
+                    </span>
+                  </td>
 
-                <td className="px-4 py-2">
-                  <span
-                    className={`text-xs px-2 py-1 rounded font-medium ${
-                      p.status === "Checked In"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-orange-100 text-orange-700"
-                    }`}
-                  >
-                    {p.status}
-                  </span>
-                </td>
-              </tr>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`text-xs px-2 py-1 rounded font-medium ${
+                        p.status === "Checked In"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
+                      {p.status}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-2">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => setOpenId(openId === p._id ? null : p._id)}
+                        title="Patient notes"
+                        className="ml-2 p-1 rounded hover:bg-gray-100"
+                      >
+                        {notesExist[p._id] ? (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V7l-4-4H5z" />
+                          </svg>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.464.263l-4 1a1 1 0 01-1.213-1.213l1-4a1 1 0 01.263-.464l9.9-9.9a2 2 0 012.828 0z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                {openId === p._id && (
+                  <tr>
+                    <td colSpan={7} className="p-0 border-b">
+                      <PatientNotes
+                        patientId={p._id}
+                        patientName={p.name}
+                        onClose={() => {
+                          try {
+                            const key = `patient_notes_${p._id}`;
+                            const v = localStorage.getItem(key);
+                            setNotesExist((s) => ({ ...s, [p._id]: !!v }));
+                          } catch (e) {}
+                          setOpenId(null);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
