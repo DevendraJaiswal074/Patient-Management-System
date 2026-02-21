@@ -12,13 +12,8 @@ import DoctorPanel from './Pages/DoctorPanel';
 import AdminPanel from './Pages/AdminPanel';
 import AdminAllPatients from './Pages/AdminAllPatients';
 import AdminCheckedIn from './Pages/AdminCheckedIn';
-<<<<<<< HEAD
-import AdminFiterDownload from './Pages/AdminFiterDownload';
-import DeleteData from './Pages/DeleteData';
-=======
 import AdminTodayPatients from './Pages/AdminTodayPatients';
 import AdminGenerateIDs from './Pages/AdminGenerateIDs';
->>>>>>> 7351ce7081ef291b4b959b34b631319ccef43027
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,12 +35,8 @@ function App() {
         <Route path='/admin-dashboard/all-patients' element={<AdminAllPatients />} />
         <Route path='/admin-dashboard/checked-out' element={<AdminFiterDownload />} />
         <Route path='/admin-dashboard/checked-in' element={<AdminCheckedIn />} />
-<<<<<<< HEAD
-        <Route path='/admin-dashboard/today-patients' element={<DeleteData />} />    
-=======
         <Route path='/admin-dashboard/today-patients' element={<AdminTodayPatients />} />    
         <Route path='/admin-dashboard/generate-ids' element={<AdminGenerateIDs />} />
->>>>>>> 7351ce7081ef291b4b959b34b631319ccef43027
       </Routes>
     </div>
   )
