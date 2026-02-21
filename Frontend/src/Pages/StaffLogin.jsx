@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { backendUrl } from "../App";
 
 const StaffLogin = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const StaffLogin = () => {
     rememberMe: false,
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,10 +22,32 @@ const StaffLogin = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Staff Login:", formData);
+    setError("");
+    setLoading(true);
     navigate("/staff-dashboard");
+
+    // try {
+    //   const res = await fetch(`${backendUrl}/api/credentials/validate`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       loginId: formData.employeeId,
+    //       password: formData.password,
+    //       role: "staff",
+    //     }),
+    //   });
+    //   const data = await res.json();
+    //   if (res.ok) {
+    //     navigate("/staff-dashboard");
+    //   } else {
+    //     setError(data.error || "Invalid credentials");
+    //   }
+    // } catch (err) {
+    //   setError("Login failed. Please try again.");
+    // }
+    // setLoading(false);
   };
 
   return (
@@ -169,6 +194,16 @@ const StaffLogin = () => {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Error Message */}
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 flex items-center gap-2">
+                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  {error}
+                </div>
+              )}
+
               {/* Employee ID */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -301,9 +336,11 @@ const StaffLogin = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3.5 px-4 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:ring-4 focus:ring-blue-200 transition-all duration-300 shadow-lg shadow-blue-200 hover:shadow-xl flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full py-3.5 px-4 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 focus:ring-4 focus:ring-blue-200 transition-all duration-300 shadow-lg shadow-blue-200 hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Access Portal</span>
+                <span>{loading ? "Logging in..." : "Access Portal"}</span>
+                {!loading && (
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -317,6 +354,7 @@ const StaffLogin = () => {
                     d="M14 5l7 7m0 0l-7 7m7-7H3"
                   />
                 </svg>
+                )}
               </button>
             </form>
 
