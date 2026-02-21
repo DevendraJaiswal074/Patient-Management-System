@@ -11,6 +11,36 @@ import TodayPatient from "../components/TodayPatient";
 function DoctorPanel() {
 
   const [todayPatients, setTodayPatients] = useState([]);
+  const [latestCheckout, setLatestCheckout] = useState(null);
+  const [loadingLatest, setLoadingLatest] = useState(true);
+
+  // Fetch latest checked-out patient
+  const fetchLatestCheckout = async () => {
+    try {
+      const res = await fetch(`${backendUrl}/api/checked-out`);
+      const data = await res.json();
+      if (data.length > 0) {
+        // Sort by checkedOutAt or updatedAt descending to get the latest
+        const sorted = data.sort(
+          (a, b) =>
+            new Date(b.checkedOutAt || b.updatedAt) -
+            new Date(a.checkedOutAt || a.updatedAt)
+        );
+        setLatestCheckout(sorted[0]);
+      }
+    } catch (err) {
+      console.error("Error fetching latest checkout:", err);
+    } finally {
+      setLoadingLatest(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestCheckout();
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchLatestCheckout, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Helper function to get current date in DD/MM/YYYY format
   const getCurrentDate = () => {
@@ -126,29 +156,7 @@ function DoctorPanel() {
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 mt-6">
-        {/* Download Button */}
-        {/* <div className="flex justify-end gap-3 mb-4">
-          <button
-            onClick={handleDownloadAll}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-          >
-            Download All Report
-          </button>
-          <button
-            onClick={handleDownloadCheckedIn}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-          >
-            Download Checked In
-          </button>
-          <button
-            onClick={handleDownloadCheckedOut}
-            className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600"
-          >
-            Download Checked Out
-          </button>
-        </div> */}
-
+      <div className="max-w-[95vw] mx-auto px-6 mt-6">
 
         {/* Download Button */}
         <div className="flex justify-end mb-4">
@@ -160,10 +168,108 @@ function DoctorPanel() {
           </button>
         </div>
 
+        <h2 className="text-4xl font-bold text-gray-700 mb-4 text-center">
+          Doctor Dashboard
+        </h2>
 
-        {/* <AllPatientList /> */}
-        {/* <CheckedOutList /> */}
-        <TodayPatient onDataLoaded={(data) => setTodayPatients(data)} />
+        <div className="flex items-start gap-5">
+          {/* Latest Checked-Out Patient Card */}
+          <div className="w-80 shrink-0">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              {/* Card Header */}
+              <div className="bg-gradient-to-r from-blue-400 to-blue-600 px-5 py-3">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <h3 className="text-white font-bold text-sm">Latest Checked-Out Patient</h3>
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-5">
+                {loadingLatest ? (
+                  <div className="flex items-center justify-center py-8">
+                    <svg className="animate-spin h-6 w-6 text-orange-400" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                  </div>
+                ) : latestCheckout ? (
+                  <div>
+                    {/* Avatar + Name */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold ${
+                        latestCheckout.type === "emergency" ? "bg-red-500" : "bg-blue-500"
+                      }`}>
+                        {latestCheckout.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="text-base font-bold text-gray-800">{latestCheckout.name}</p>
+                        {latestCheckout.type === "emergency" && (
+                          <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded text-[10px] font-bold">
+                            EMERGENCY
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span className="text-xs text-gray-500 font-medium">Age</span>
+                        <span className="text-sm font-semibold text-gray-800">{latestCheckout.age} yrs</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span className="text-xs text-gray-500 font-medium">Phone</span>
+                        <span className="text-sm font-semibold text-gray-800">{latestCheckout.phone}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span className="text-xs text-gray-500 font-medium">Type</span>
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                          latestCheckout.type === "emergency"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}>
+                          {latestCheckout.type === "emergency" ? "Emergency" : "Normal"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                        <span className="text-xs text-gray-500 font-medium">Status</span>
+                        <span className="text-xs font-medium px-2 py-1 rounded-full bg-orange-100 text-orange-700">
+                          Checked Out
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between py-2">
+                        <span className="text-xs text-gray-500 font-medium">Checked Out At</span>
+                        <span className="text-xs font-semibold text-gray-700">
+                          {new Date(latestCheckout.checkedOutAt || latestCheckout.updatedAt).toLocaleString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <svg className="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <p className="text-sm text-gray-400">No check-outs yet</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Today's Patient List */}
+          <div className="flex-1 min-w-0">
+            <TodayPatient onDataLoaded={(data) => setTodayPatients(data)} />
+          </div>
+        </div>
 
       </div>
     </div>

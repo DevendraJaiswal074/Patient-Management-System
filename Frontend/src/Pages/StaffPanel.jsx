@@ -126,6 +126,10 @@ function StaffPanel() {
         <Navbar />
       </div>
 
+      <h2 className="text-4xl font-bold text-gray-800 mb-2 mt-4 text-center">
+        Staff Dashboard
+      </h2>
+
       <div className="flex items-start gap-4 mt-5 mx-3">
         <AddPatient onAddPatient={handleAddPatient} />
         <div className="w-full">

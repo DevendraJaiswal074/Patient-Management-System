@@ -109,7 +109,7 @@ function AdminPanel() {
       <Navbar />
 
       <div className="max-w-5xl mx-auto px-6 mt-10">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6 text-center">
+        <h2 className="text-4xl font-bold text-gray-700 mb-6 text-center">
           Admin Dashboard
         </h2>
 
