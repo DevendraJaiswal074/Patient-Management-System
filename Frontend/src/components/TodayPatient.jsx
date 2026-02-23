@@ -6,6 +6,7 @@ function TodayPatient({ onDataLoaded }) {
   const [todayPatients, setTodayPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState(null);
   const [notesExist, setNotesExist] = useState({});
 
@@ -79,6 +80,16 @@ function TodayPatient({ onDataLoaded }) {
           filter === "checked-in" ? p.status === "Checked In" : p.status === "Checked Out"
         );
 
+  // apply search filter (name or phone)
+  const searchedPatients = filteredPatients.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      (p.name && p.name.toLowerCase().includes(q)) ||
+      (p.phone && String(p.phone).toLowerCase().includes(q))
+    );
+  });
+
   if (loading) {
     return (
       <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
@@ -89,8 +100,14 @@ function TodayPatient({ onDataLoaded }) {
 
   return (
     <div className="bg-white shadow border border-black/30 rounded mb-10">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-black/30">
+      <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-2 border-b border-black/30">
         <h2 className="font-bold text-xl text-gray-700">Today's Patients</h2>
+        <input
+          placeholder="Search by name or phone..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none w-64"
+        />
         <div className="flex gap-2">
           {["all", "checked-in", "checked-out"].map((f) => (
             <button
@@ -108,8 +125,8 @@ function TodayPatient({ onDataLoaded }) {
         </div>
       </div>
 
-      {filteredPatients.length === 0 ? (
-        <div className="p-8 text-center text-gray-500">No patients added today.</div>
+      {searchedPatients.length === 0 ? (
+        <div className="p-8 text-center text-gray-500">No patients found.</div>
       ) : (
         <div className="w-full overflow-x-auto">
         <table className="w-full min-w-175 text-sm">
@@ -127,7 +144,7 @@ function TodayPatient({ onDataLoaded }) {
           </thead>
 
           <tbody className="divide-y">
-            {filteredPatients.map((p, i) => (
+            {searchedPatients.map((p, i) => (
               <React.Fragment key={p._id}>
                 <tr>
                   <td className="px-4 py-3">{i + 1}.</td>

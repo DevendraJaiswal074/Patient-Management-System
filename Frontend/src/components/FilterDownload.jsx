@@ -10,6 +10,7 @@ function FilterDownload() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [showDateFilter, setShowDateFilter] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchAllPatients = async () => {
@@ -145,6 +146,16 @@ function FilterDownload() {
     isDateInRange(p.appointmentDate || p.createdAt, fromDate, toDate),
   );
 
+  // apply search filter (name or phone)
+  const searchedPatients = filteredPatients.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      (p.name && p.name.toLowerCase().includes(q)) ||
+      (p.phone && String(p.phone).toLowerCase().includes(q))
+    );
+  });
+
   if (loading) {
     return (
       <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
@@ -157,11 +168,17 @@ function FilterDownload() {
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-black/30">
         <h2 className="font-bold text-xl text-gray-700">Filter and Download</h2>
+        <input
+          placeholder="Search by name or phone..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="px-3 py-2 border border-gray-200 rounded text-sm focus:outline-none w-64"
+        />
         <button
           onClick={() => setShowDateFilter(!showDateFilter)}
           className="text-xs px-3 py-1.5 rounded bg-purple-600 text-white hover:bg-purple-700 transition-all"
         >
-          📅 {showDateFilter ? "Hide" : "Date Filter"}
+          📅 {showDateFilter ? "Hide" : "Filter Date"}
         </button>
       </div>
 
@@ -216,9 +233,9 @@ function FilterDownload() {
         </div>
       )}
 
-      {filteredPatients.length === 0 ? (
+      {searchedPatients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">
-          Download Date-Wise Patient List.
+          {filteredPatients.length === 0 ? "Download Date-Wise Patient List." : "No patients found."}
         </div>
       ) : (
         <div className="w-full overflow-x-auto">
@@ -237,7 +254,7 @@ function FilterDownload() {
           </thead>
 
           <tbody className="divide-y">
-                {filteredPatients.map((p, i) => (
+                {searchedPatients.map((p, i) => (
                   <React.Fragment key={p._id}>
                     <tr>
                 <td className="px-4 py-3">{i + 1}.</td>
