@@ -1,132 +1,196 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { backendUrl } from "../App";
 
 function AdminPanel() {
-  const cards = [
+  const [stats, setStats] = useState({
+    totalPatients: 0,
+    checkedIn: 0,
+    checkedOut: 0,
+    loading: true,
+  });
+
+  const [activeModule, setActiveModule] = useState(null);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/patient/all`);
+      if (response.ok) {
+        const patients = await response.json();
+        const checkedInCount = patients.filter(
+          (p) => p.status === "CheckedIn"
+        ).length;
+        const checkedOutCount = patients.filter(
+          (p) => p.status === "CheckedOut"
+        ).length;
+
+        setStats({
+          totalPatients: patients.length,
+          checkedIn: checkedInCount,
+          checkedOut: checkedOutCount,
+          loading: false,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to fetch statistics:", error);
+      setStats((prev) => ({ ...prev, loading: false }));
+    }
+  };
+
+  const modules = [
     {
-      title: "View All Patients",
-      description:
-        "View date-wise all patients with Checked In / Checked Out status",
+      id: "all-patients",
+      title: "All Patients List",
       path: "/admin-dashboard/all-patients",
-      color: "bg-blue-600",
-      hoverColor: "hover:bg-blue-700",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 -960 960 960"
-          className="w-10 fill-white"
-        >
-          <path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113Z" />
-        </svg>
-      ),
+      icon: "👥",
+      description: "Manage all patients database",
+      details: "View, edit, and manage complete patient records with status tracking",
+      color: "from-blue-600 to-cyan-500",
+      textColor: "text-blue-600",
+      bgColor: "bg-blue-50",
     },
     {
-      title: "Filter Patient List",
-      description: " Download : Date-Wise Patient List.",
-      path: "/admin-dashboard/checked-out",
-      color: "bg-orange-500",
-      hoverColor: "hover:bg-orange-600",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 -960 960 960"
-          className="w-10"
-          fill="#fff"
-        >
-          <path d="M509-269q-29-29-29-71t29-71q29-29 71-29t71 29q29 29 29 71t-29 71q-29 29-71 29t-71-29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z" />
-        </svg>
-      ),
-    },
-    // {
-    //   title: "Checked In Patients",
-    //   description: "View all patients currently checked in",
-    //   path: "/admin-dashboard/checked-in",
-    //   color: "bg-green-600",
-    //   hoverColor: "hover:bg-green-700",
-    //   icon: (
-    //     <svg
-    //       xmlns="http://www.w3.org/2000/svg"
-    //       viewBox="0 -960 960 960"
-    //       className="w-10 fill-white"
-    //     >
-    //       <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z" />
-    //     </svg>
-    //   ),
-    // },
-    {
+      id: "today-patients",
       title: "Today's Patients",
-      description: "View all patients added today with their status",
       path: "/admin-dashboard/today-patients",
-      color: "bg-purple-600",
-      hoverColor: "hover:bg-purple-700",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 -960 960 960"
-          className="w-10 fill-white"
-        >
-          <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm280-200q-17 0-28.5-11.5T440-400q0-17 11.5-28.5T480-440q17 0 28.5 11.5T520-400q0 17-11.5 28.5T480-360Zm-160 0q-17 0-28.5-11.5T280-400q0-17 11.5-28.5T320-440q17 0 28.5 11.5T360-400q0 17-11.5 28.5T320-360Zm320 0q-17 0-28.5-11.5T600-400q0-17 11.5-28.5T640-440q17 0 28.5 11.5T680-400q0 17-11.5 28.5T640-360Z" />
-        </svg>
-      ),
+      icon: "📅",
+      description: "Daily patient operations",
+      details: "Monitor all patients added today and their real-time status",
+      color: "from-purple-600 to-pink-500",
+      textColor: "text-purple-600",
+      bgColor: "bg-purple-50",
     },
     {
+      id: "filter-download",
+      title: "Reports & Export",
+      path: "/admin-dashboard/checked-out",
+      icon: "📊",
+      description: "Generate reports & downloads",
+      details: "Export patient data in multiple formats for analysis and records",
+      color: "from-orange-500 to-red-500",
+      textColor: "text-orange-600",
+      bgColor: "bg-orange-50",
+    },
+    {
+      id: "generate-ids",
       title: "Generate Login IDs",
-      description: "Create & manage login credentials for doctors and staff",
       path: "/admin-dashboard/generate-ids",
-      color: "bg-indigo-600",
-      hoverColor: "hover:bg-indigo-700",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 -960 960 960"
-          className="w-10 fill-white"
-        >
-          <path d="M80-200v-80h400v80H80Zm0-200v-80h200v80H80Zm0-200v-80h200v80H80Zm744 400L670-354q-24 17-52.5 25.5T560-320q-83 0-141.5-58.5T360-520q0-83 58.5-141.5T560-720q83 0 141.5 58.5T760-520q0 29-8.5 57.5T726-410l154 154-56 56ZM560-400q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Z" />
-        </svg>
-      ),
+      icon: "🔑",
+      description: "Manage access credentials",
+      details: "Create and manage login IDs for doctors and staff members",
+      color: "from-indigo-600 to-blue-500",
+      textColor: "text-indigo-600",
+      bgColor: "bg-indigo-50",
     },
     {
-      title: "Delete Patient Data",
-      description: "Remove specific patients or bulk delete by date",
+      id: "delete-data",
+      title: "Data Management",
       path: "/admin-dashboard/delete-patients",
-      color: "bg-red-600",
-      hoverColor: "hover:bg-red-700",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 -960 960 960"
-          className="w-10 fill-white"
-        >
-          <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
-        </svg>
-      ),
+      icon: "🗑️",
+      description: "Remove patient records",
+      details: "Delete specific or bulk patient records with date filters",
+      color: "from-red-600 to-pink-500",
+      textColor: "text-red-600",
+      bgColor: "bg-red-50",
     },
   ];
 
   return (
-    <div className="w-full min-h-screen bg-gray-100">
+    <div className="w-full min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="max-w-5xl mx-auto px-6 mt-10">
-        <h2 className="text-4xl font-bold text-gray-700 mb-6 text-center">
-          Admin Dashboard
-        </h2>
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-5xl font-bold text-gray-900">Admin Dashboard</h1>
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Hospital Management</span>
+          </div>
+          {/* <p className="text-gray-600 text-lg mt-2">
+            Complete control over patient management, operations, and system administration
+          </p> */}
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.map((card) => (
-            <Link
-              key={card.title}
-              to={card.path}
-              className={`${card.color} ${card.hoverColor} rounded-xl p-6 text-white shadow-lg transition-all transform hover:scale-105`}
-            >
-              <div className="flex flex-col items-center text-center gap-3">
-                {card.icon}
-                <h3 className="text-lg font-bold">{card.title}</h3>
-                <p className="text-sm text-white/80">{card.description}</p>
+        {/* Operations Section Title */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Hospital Operations</h2>
+          <p className="text-gray-600">Access all administrative modules and operations</p>
+        </div>
+
+        {/* Module Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {modules.map((module) => (
+            <Link key={module.id} to={module.path} className="group">
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 h-full hover:border-gray-300">
+                {/* Header Bar with Gradient */}
+                <div className={`bg-linear-to-r ${module.color} h-2`}></div>
+
+                {/* Content */}
+                <div className="p-8">
+                  {/* Icon and Title */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <span className="text-4xl mb-3 inline-block">{module.icon}</span>
+                      <h3 className="text-xl font-bold text-gray-900 mt-3 group-hover:text-gray-700">
+                        {module.title}
+                      </h3>
+                    </div>
+                    <svg
+                      className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transform transition-all"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+
+                  {/* Descriptions */}
+                  <p className="text-sm font-semibold text-gray-600 mb-2">
+                    {module.description}
+                  </p>
+                  <p className="text-sm text-gray-500 leading-relaxed mb-6">
+                    {module.details}
+                  </p>
+
+                  {/* Action Button */}
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg ${module.bgColor} ${module.textColor} font-semibold text-sm group-hover:opacity-80 transition-opacity`}>
+                    <span>Open</span>
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M11 3a1 1 0 100 2h3.414l-8.707 8.707a1 1 0 001.414 1.414L15.828 6.414V10a1 1 0 102 0V4a1 1 0 00-1-1h-6z"></path>
+                    </svg>
+                  </div>
+                </div>
+
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Bottom Info Section */}
+        <div className="mt-16 bg-linear-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-8">
+          <div className="flex items-start gap-4">
+            <div className="shrink-0">
+              <svg className="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-10-1h2v2H8V4z" clipRule="evenodd"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">Dashboard Tips</h3>
+              <p className="text-gray-700 mb-2">
+                💡 All statistics update in real-time. Each module provides comprehensive tools for specific operations.
+              </p>
+              <p className="text-gray-600 text-sm">
+                Use the navigation above to quickly access all patient management, reporting, and administrative functions.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
