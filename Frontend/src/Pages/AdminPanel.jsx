@@ -11,13 +11,7 @@ function AdminPanel() {
     loading: true,
   });
 
-  const [activeModule, setActiveModule] = useState(null);
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
+  async function fetchStats() {
     try {
       const response = await fetch(`${backendUrl}/patient/all`);
       if (response.ok) {
@@ -40,7 +34,15 @@ function AdminPanel() {
       console.error("Failed to fetch statistics:", error);
       setStats((prev) => ({ ...prev, loading: false }));
     }
-  };
+  }
+
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      void fetchStats();
+    });
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
 
   const modules = [
     {
@@ -104,45 +106,39 @@ function AdminPanel() {
     <div className="w-full min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-5xl font-bold text-gray-900">Admin Dashboard</h1>
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Hospital Management</span>
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 md:py-12">
+        <div className="mb-8 md:mb-12">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
+              Admin Dashboard
+            </h1>
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+              Hospital Management
+            </span>
           </div>
-          {/* <p className="text-gray-600 text-lg mt-2">
-            Complete control over patient management, operations, and system administration
-          </p> */}
         </div>
 
-        {/* Operations Section Title */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Hospital Operations</h2>
-          <p className="text-gray-600">Access all administrative modules and operations</p>
+        <div className="mb-6 md:mb-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 md:mb-2">Hospital Operations</h2>
+          <p className="text-xs md:text-sm text-gray-600">Access all administrative modules and operations</p>
         </div>
 
-        {/* Module Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {modules.map((module) => (
             <Link key={module.id} to={module.path} className="group">
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 h-full hover:border-gray-300">
-                {/* Header Bar with Gradient */}
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 h-full hover:border-gray-300 flex flex-col">
                 <div className={`bg-linear-to-r ${module.color} h-2`}></div>
 
-                {/* Content */}
-                <div className="p-8">
-                  {/* Icon and Title */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <span className="text-4xl mb-3 inline-block">{module.icon}</span>
-                      <h3 className="text-xl font-bold text-gray-900 mt-3 group-hover:text-gray-700">
+                <div className="p-4 md:p-6 lg:p-8 flex flex-col grow">
+                  <div className="flex items-start justify-between mb-4 md:mb-6 gap-3">
+                    <div className="grow min-w-0">
+                      <span className="text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-3 inline-block">{module.icon}</span>
+                      <h3 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 mt-2 md:mt-3 group-hover:text-gray-700 wrap-break-word">
                         {module.title}
                       </h3>
                     </div>
                     <svg
-                      className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transform transition-all"
+                      className="w-5 h-5 md:w-6 md:h-6 text-gray-400 group-hover:text-gray-600 transform transition-all shrink-0 mt-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -151,42 +147,38 @@ function AdminPanel() {
                     </svg>
                   </div>
 
-                  {/* Descriptions */}
-                  <p className="text-sm font-semibold text-gray-600 mb-2">
+                  <p className="text-xs md:text-sm font-semibold text-gray-600 mb-2">
                     {module.description}
                   </p>
-                  <p className="text-sm text-gray-500 leading-relaxed mb-6">
+                  <p className="text-xs md:text-sm text-gray-500 leading-relaxed mb-4 md:mb-6 grow">
                     {module.details}
                   </p>
 
-                  {/* Action Button */}
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg ${module.bgColor} ${module.textColor} font-semibold text-sm group-hover:opacity-80 transition-opacity`}>
+                  <div className={`inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-lg ${module.bgColor} ${module.textColor} font-semibold text-xs md:text-sm group-hover:opacity-80 transition-opacity`}>
                     <span>Open</span>
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-3 h-3 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M11 3a1 1 0 100 2h3.414l-8.707 8.707a1 1 0 001.414 1.414L15.828 6.414V10a1 1 0 102 0V4a1 1 0 00-1-1h-6z"></path>
                     </svg>
                   </div>
                 </div>
-
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Bottom Info Section */}
-        <div className="mt-16 bg-linear-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-8">
-          <div className="flex items-start gap-4">
+        <div className="mt-10 md:mt-16 bg-linear-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-4 md:p-8">
+          <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4">
             <div className="shrink-0">
-              <svg className="h-8 w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="h-6 md:h-8 w-6 md:w-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-10-1h2v2H8V4z" clipRule="evenodd"></path>
               </svg>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Dashboard Tips</h3>
-              <p className="text-gray-700 mb-2">
+            <div className="min-w-0">
+              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1">Dashboard Tips</h3>
+              <p className="text-xs md:text-sm text-gray-700 mb-2">
                 💡 All statistics update in real-time. Each module provides comprehensive tools for specific operations.
               </p>
-              <p className="text-gray-600 text-sm">
+              <p className="text-xs md:text-sm text-gray-600">
                 Use the navigation above to quickly access all patient management, reporting, and administrative functions.
               </p>
             </div>

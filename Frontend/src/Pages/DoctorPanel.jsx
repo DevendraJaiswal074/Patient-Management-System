@@ -249,27 +249,27 @@ function DoctorPanel() {
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="max-w-[95vw] mx-auto px-6 mt-8">
+      <div className="max-w-[95vw] mx-auto px-3 md:px-6 mt-6 md:mt-8">
 
         {/* Header: title centered, download button aligned right */}
-        <div className="flex items-center justify-between mb-4 mt-2">
-          <div className="w-1/4" />
-          <h2 className="text-4xl font-bold text-gray-700 mb-0 text-center">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3 mb-4 mt-2">
+          <div className="hidden md:block md:w-1/4" />
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-700 mb-0 text-center">
             Doctor Dashboard
           </h2>
-          <div className="w-1/4 flex justify-end">
+          <div className="w-full md:w-1/4 flex justify-center md:justify-end">
             <button
               onClick={handleDownloadToday}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm md:text-base"
             >
               Download Today's Report
             </button>
           </div>
         </div>
 
-        <div className="flex items-start gap-5">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4 md:gap-5">
           {/* Latest Checked-Out Patient Card */}
-          <div className="w-80 shrink-0">
+          <div className="w-full lg:w-80 shrink-0">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               {/* Card Header */}
               <div className="bg-gradient-to-r from-blue-400 to-blue-600 px-5 py-3">
@@ -363,7 +363,7 @@ function DoctorPanel() {
           </div>
 
           {/* Today's Patient List */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 w-full">
             <TodayPatient onDataLoaded={(data) => setTodayPatients(data)} />
           </div>
         </div>

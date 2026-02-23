@@ -121,18 +121,20 @@ function StaffPanel() {
   };
 
   return (
-    <div className="h-screen w-full bg-blue-50">
+    <div className="min-h-screen w-full bg-blue-50">
       <div className="top-0 relative">
         <Navbar />
       </div>
 
-      <h2 className="text-4xl font-bold text-gray-800 mb-2 mt-4 text-center">
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 mt-4 text-center px-2">
         Staff Dashboard
       </h2>
 
-      <div className="flex items-start gap-4 mt-5 mx-3">
-        <AddPatient onAddPatient={handleAddPatient} />
-        <div className="w-full">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4 mt-5 mx-2 md:mx-3">
+        <div className="w-full lg:w-auto">
+          <AddPatient onAddPatient={handleAddPatient} />
+        </div>
+        <div className="w-full min-w-0">
           <PatientList
             patients={patients}
             onCheckOut={handleCheckOut}

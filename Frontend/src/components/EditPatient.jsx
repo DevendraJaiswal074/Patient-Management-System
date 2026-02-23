@@ -77,8 +77,8 @@ function EditPatient({ patient, onEditPatient, onCancel }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96 max-h-screen overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3">
+      <div className="bg-white rounded-lg shadow-lg p-4 md:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <h2 className="font-bold text-lg mb-4">Edit Patient Information</h2>
 
         {message.text && (

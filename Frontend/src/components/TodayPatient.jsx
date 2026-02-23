@@ -100,7 +100,8 @@ function TodayPatient({ onDataLoaded }) {
       {filteredPatients.length === 0 ? (
         <div className="p-8 text-center text-gray-500">No patients added today.</div>
       ) : (
-        <table className="w-full text-sm">
+        <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-175 text-sm">
           <thead className="bg-gray-50 border-b border-black/30">
             <tr>
               <th className="px-4 py-2 text-left">No</th>
@@ -198,6 +199,7 @@ function TodayPatient({ onDataLoaded }) {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

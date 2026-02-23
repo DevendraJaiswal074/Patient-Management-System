@@ -41,13 +41,13 @@ function AdminTodayPatients() {
     <div className="w-full min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 mt-6">
+      <div className="max-w-7xl mx-auto px-3 md:px-6 mt-4 md:mt-6">
 
         {/* Download Button */}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-center md:justify-end mb-4">
           <button
             onClick={handleDownloadToday}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            className="bg-blue-600 text-white px-3 md:px-4 py-2 rounded-md hover:bg-blue-700 text-sm md:text-base"
           >
             Download Today's Report
           </button>

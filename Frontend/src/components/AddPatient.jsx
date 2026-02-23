@@ -76,8 +76,8 @@ function AddPatient({ onAddPatient }) {
   };
 
   return (
-    <div className="bg-white w-max px-5 py-6 border border-black/30 rounded">
-      <h2 className="font-bold text-lg">Add New Patient</h2>
+    <div className="bg-white w-full lg:w-max px-4 md:px-5 py-5 md:py-6 border border-black/30 rounded">
+      <h2 className="font-bold text-base md:text-lg">Add New Patient</h2>
 
       {message.text && (
         <div
@@ -93,7 +93,7 @@ function AddPatient({ onAddPatient }) {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-2 mt-4 min-w-60"
+        className="flex flex-col gap-2 mt-4 w-full md:min-w-60"
       >
         <input
           type="text"
@@ -133,7 +133,7 @@ function AddPatient({ onAddPatient }) {
           className="rounded border border-black/20 p-2"
         />
 
-        <div className="flex gap-5 mt-2">
+        <div className="flex flex-wrap gap-4 md:gap-5 mt-2">
           <label
             htmlFor="normal"
             className="flex items-center gap-2 cursor-pointer"

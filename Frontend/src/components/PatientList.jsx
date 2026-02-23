@@ -28,7 +28,8 @@ const PatientList = ({ patients, onCheckOut, onEdit, loading }) => {
           No patients in the list. Add a new patient to get started.
         </div>
       ) : (
-        <table className="w-full text-sm">
+        <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-175 text-sm">
           <thead className="bg-gray-50 border-b border-black/30 rounded">
             <tr>
               <th className="px-4 py-2 text-left">No</th>
@@ -91,6 +92,7 @@ const PatientList = ({ patients, onCheckOut, onEdit, loading }) => {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );
