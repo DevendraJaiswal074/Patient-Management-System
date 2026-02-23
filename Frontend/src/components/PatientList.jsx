@@ -20,7 +20,7 @@ const PatientList = ({ patients, onCheckOut, onEdit, loading }) => {
   return (
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="text-center px-4 py-2 border-b border-black/30 rounded font-bold text-xl text-gray-700">
-        Today's Patient List
+        Remaining Patient List
       </div>
 
       {patients.length === 0 ? (

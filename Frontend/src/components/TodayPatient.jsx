@@ -20,14 +20,16 @@ function TodayPatient({ onDataLoaded }) {
         const patients = await patientsRes.json();
         const checkedOut = await checkedOutRes.json();
 
-        const today = new Date().toDateString();
+        // Compare using YYYY-MM-DD to avoid timezone issues
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
         const todayCheckedIn = patients
-          .filter((p) => p.appointmentDate && new Date(p.appointmentDate).toDateString() === today)
+          .filter((p) => p.appointmentDate && p.appointmentDate.slice(0, 10) === todayStr)
           .map((p) => ({ ...p, status: "Checked In" }));
 
         const todayCheckedOut = checkedOut
-          .filter((p) => p.appointmentDate && new Date(p.appointmentDate).toDateString() === today)
+          .filter((p) => p.appointmentDate && p.appointmentDate.slice(0, 10) === todayStr)
           .map((p) => ({ ...p, status: "Checked Out" }));
 
         // Show checked-out patients first, then checked-in

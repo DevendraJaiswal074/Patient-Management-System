@@ -121,6 +121,7 @@ function AddPatient({ onAddPatient }) {
           name="appointmentDate"
           value={formData.appointmentDate}
           onChange={handleChange}
+          min={new Date().toISOString().split("T")[0]}
           className="rounded border border-black/20 p-2"
         />
 

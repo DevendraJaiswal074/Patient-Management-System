@@ -71,6 +71,7 @@ function AdminCheckedIn() {
                   <th className="px-4 py-2 text-left">Patient Name</th>
                   <th className="px-4 py-2 text-left">Age</th>
                   <th className="px-4 py-2 text-left">Phone Number</th>
+                  <th className="px-4 py-2 text-left">Appointment Date</th>
                   <th className="px-4 py-2 text-left">Type</th>
                   <th className="px-4 py-2 text-left">Status</th>
                 </tr>
@@ -92,6 +93,16 @@ function AdminCheckedIn() {
 
                     <td className="px-4 py-2">{p.age}</td>
                     <td className="px-4 py-2">{p.phone}</td>
+
+                    <td className="px-4 py-2 text-sm text-gray-600">
+                      {p.appointmentDate
+                        ? new Date(p.appointmentDate).toLocaleDateString("en-IN", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                          })
+                        : "N/A"}
+                    </td>
 
                     <td className="px-4 py-2">
                       <span

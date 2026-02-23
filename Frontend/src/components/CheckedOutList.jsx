@@ -99,7 +99,7 @@ function CheckedOutList() {
       "Patient Name": p.name,
       Age: p.age,
       "Phone Number": p.phone,
-      "Created Date": formatDate(p.createdAt),
+      "Appointment Date": formatDate(p.appointmentDate || p.createdAt),
       Type: p.type === "emergency" ? "Emergency" : "Normal",
       Status: "Checked Out",
       Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
@@ -136,7 +136,7 @@ function CheckedOutList() {
 
   // Filter checked-out patients by date range
   const filteredPatients = checkedOutPatients.filter((p) =>
-    isDateInRange(p.createdAt, fromDate, toDate),
+    isDateInRange(p.appointmentDate || p.createdAt, fromDate, toDate),
   );
 
   if (loading) {
@@ -223,7 +223,7 @@ function CheckedOutList() {
               <th className="px-4 py-2 text-left">Patient Name</th>
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
-              <th className="px-4 py-2 text-left">Date</th>
+              <th className="px-4 py-2 text-left">Appointment Date</th>
                   <th className="px-4 py-2 text-left">Type</th>
                   <th className="px-4 py-2 text-left">Status</th>
                   <th className="px-4 py-2 text-left">Note</th>
@@ -249,7 +249,7 @@ function CheckedOutList() {
                 <td className="px-4 py-2">{p.phone}</td>
 
                 <td className="px-4 py-2 text-sm text-gray-600">
-                  {formatDate(p.createdAt)}
+                  {formatDate(p.appointmentDate || p.createdAt)}
                 </td>
 
                 <td className="px-4 py-2">

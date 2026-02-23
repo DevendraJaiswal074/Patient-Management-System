@@ -14,12 +14,17 @@ function StaffPanel() {
   const [loading, setLoading] = useState(true);
   const [editingPatient, setEditingPatient] = useState(null);
 
-  // Fetch patients from backend
+  // Fetch patients from backend (only today's appointments)
   const fetchPatients = async () => {
     try {
       const response = await fetch(`${backendUrl}/api/patients`);
       const data = await response.json();
-      setPatients(data);
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+      const todayPatients = data.filter(
+        (p) => p.appointmentDate && p.appointmentDate.slice(0, 10) === todayStr
+      );
+      setPatients(todayPatients);
 
     } catch (error) {
       console.error("Error fetching patients:", error);
@@ -60,7 +65,12 @@ function StaffPanel() {
 
       if (response.ok) {
         const newPatient = await response.json();
-        setPatients((prev) => [...prev, newPatient]);
+        // Only add to visible list if appointment is today
+        const now = new Date();
+        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+        if (newPatient.appointmentDate && newPatient.appointmentDate.slice(0, 10) === todayStr) {
+          setPatients((prev) => [...prev, newPatient]);
+        }
         return { success: true };
       } else {
         const error = await response.json();
