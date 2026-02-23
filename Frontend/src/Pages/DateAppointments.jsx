@@ -75,33 +75,52 @@ function DateAppointments() {
             <button onClick={() => window.close()} className="text-sm px-2 py-1 border rounded">Close</button>
           </div>
 
-          {loading ? (
-            <p className="text-sm text-gray-500">Loading...</p>
-          ) : patients.length === 0 ? (
-            <p className="text-sm text-gray-600">No appointments for this date.</p>
-          ) : (
-              <>
-                <div className="text-sm text-gray-600 mb-3">
-                  <div>Server results: <strong>{serverCount ?? '-'}</strong></div>
-                  <div>Client-filter results: <strong>{clientCount ?? '-'}</strong></div>
-                </div>
-
-                {patients.length === 0 ? (
-                  <p className="text-sm text-gray-600">No appointments for this date.</p>
-                ) : (
-            <ol className="list-decimal pl-5 space-y-2">
-              {patients.map((p) => (
-                <li key={p._id} className="py-1 border-b">
-                  <div className="font-semibold">{p.name}</div>
-                  <div className="text-xs text-gray-500">Age: {p.age} • {p.phone} • {p.type}</div>
-                </li>
-              ))}
-            </ol>
-                )}
-              </>
-          )}
         </div>
       </div>
+
+      {loading ? (
+        <div className="bg-white border border-black/30 rounded p-8 text-center">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      ) : patients.length === 0 ? (
+        <div className="bg-white border border-black/30 rounded p-8 text-center">
+          <p className="text-gray-600">No appointments for this date.</p>
+        </div>
+      ) : (
+        <div className="bg-white border border-black/30 rounded overflow-hidden">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-200 text-sm">
+              <thead className="bg-gray-50 border-b border-black/30">
+                <tr>
+                  <th className="px-4 py-2 text-left">No</th>
+                  <th className="px-4 py-2 text-left">Patient Name</th>
+                  <th className="px-4 py-2 text-left">Age</th>
+                  <th className="px-4 py-2 text-left">Phone</th>
+                  <th className="px-4 py-2 text-left">Type</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {patients.map((p, i) => (
+                  <tr key={p._id}>
+                    <td className="px-4 py-2">{i + 1}.</td>
+                    <td className="px-4 py-2 flex items-center gap-2">
+                      <div className={`w-5 h-5 rounded-full ${p.type === "emergency" ? "bg-red-500" : "bg-sky-500"}`}></div>
+                      {p.name}
+                    </td>
+                    <td className="px-4 py-2">{p.age}</td>
+                    <td className="px-4 py-2">{p.phone}</td>
+                    <td className="px-4 py-2">
+                      <span className={`text-xs px-2 py-1 rounded ${p.type === "emergency" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
+                        {p.type === "emergency" ? "Emergency" : "Normal"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
