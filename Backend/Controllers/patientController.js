@@ -4,7 +4,7 @@ const { sendAppointmentConfirmation } = require("../services/messagingService");
 // GET patients (checked-in)
 exports.getPatients = async (req, res) => {
   try {
-    const patients = await Patient.find({ status: "CheckedIn" }).sort({ createdAt: -1 });
+    const patients = await Patient.find({ status: "CheckedIn" }).sort({ appointmentDate: 1, createdAt: -1 });
     res.json(patients);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch patients" });
@@ -13,9 +13,9 @@ exports.getPatients = async (req, res) => {
 
 // ADD patient
 exports.addPatient = async (req, res) => {
-  const { name, age, phone, type } = req.body;
+  const { name, age, phone, type, appointmentDate } = req.body;
 
-  if (!name || !age || !phone || !type) {
+  if (!name || !age || !phone || !type || !appointmentDate) {
     return res.status(400).json({ error: "All fields required" });
   }
 
@@ -29,6 +29,7 @@ exports.addPatient = async (req, res) => {
       age: Number(age),
       phone,
       type,
+      appointmentDate: new Date(appointmentDate),
     });
 
     // Send confirmation message (non-blocking)
@@ -45,11 +46,11 @@ exports.addPatient = async (req, res) => {
 // UPDATE patient information
 exports.updatePatient = async (req, res) => {
   try {
-    const { name, age, phone, type } = req.body;
+    const { name, age, phone, type, appointmentDate } = req.body;
     const patientId = req.params.id;
 
     // Validate required fields
-    if (!name || !age || !phone || !type) {
+    if (!name || !age || !phone || !type || !appointmentDate) {
       return res.status(400).json({ error: "All fields required" });
     }
 
@@ -70,6 +71,7 @@ exports.updatePatient = async (req, res) => {
         age: Number(age),
         phone,
         type,
+        appointmentDate: new Date(appointmentDate),
       },
       { new: true }
     );
@@ -115,7 +117,7 @@ exports.getCheckedOut = async (req, res) => {
 // GET all patients (both CheckedIn and CheckedOut)
 exports.getAllPatients = async (req, res) => {
   try {
-    const patients = await Patient.find().sort({ createdAt: -1 });
+    const patients = await Patient.find().sort({ appointmentDate: 1, createdAt: -1 });
     res.json(patients);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch patients" });

@@ -6,6 +6,7 @@ function AddPatient({ onAddPatient }) {
     age: "",
     phone: "",
     type: "normal",
+    appointmentDate: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,7 +25,7 @@ function AddPatient({ onAddPatient }) {
 
     const age = Number(formData.age);
 
-    if (!formData.name || !formData.phone || !formData.age) {
+    if (!formData.name || !formData.phone || !formData.age || !formData.appointmentDate) {
       setMessage({ text: "Please fill all fields", type: "error" });
       return;
     }
@@ -59,6 +60,7 @@ function AddPatient({ onAddPatient }) {
         age: "",
         phone: "",
         type: "normal",
+        appointmentDate: "",
       });
     } else {
       setMessage({
@@ -111,6 +113,14 @@ function AddPatient({ onAddPatient }) {
           placeholder="Patient age"
           min={1}
           max={109}
+          className="rounded border border-black/20 p-2"
+        />
+
+        <input
+          type="date"
+          name="appointmentDate"
+          value={formData.appointmentDate}
+          onChange={handleChange}
           className="rounded border border-black/20 p-2"
         />
 

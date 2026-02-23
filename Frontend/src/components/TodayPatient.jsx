@@ -23,11 +23,11 @@ function TodayPatient({ onDataLoaded }) {
         const today = new Date().toDateString();
 
         const todayCheckedIn = patients
-          .filter((p) => new Date(p.createdAt).toDateString() === today)
+          .filter((p) => p.appointmentDate && new Date(p.appointmentDate).toDateString() === today)
           .map((p) => ({ ...p, status: "Checked In" }));
 
         const todayCheckedOut = checkedOut
-          .filter((p) => new Date(p.createdAt).toDateString() === today)
+          .filter((p) => p.appointmentDate && new Date(p.appointmentDate).toDateString() === today)
           .map((p) => ({ ...p, status: "Checked Out" }));
 
         // Show checked-out patients first, then checked-in
@@ -108,6 +108,7 @@ function TodayPatient({ onDataLoaded }) {
               <th className="px-4 py-2 text-left">Patient Name</th>
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
+              <th className="px-4 py-2 text-left">Appointment Date</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Status</th>
               <th className="px-4 py-2 text-left">Note</th>
@@ -131,6 +132,16 @@ function TodayPatient({ onDataLoaded }) {
 
                   <td className="px-4 py-2">{p.age}</td>
                   <td className="px-4 py-2">{p.phone}</td>
+
+                  <td className="px-4 py-2 text-sm text-gray-600">
+                    {p.appointmentDate
+                      ? new Date(p.appointmentDate).toLocaleDateString("en-IN", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                      : "N/A"}
+                  </td>
 
                   <td className="px-4 py-2">
                     <span
@@ -179,7 +190,7 @@ function TodayPatient({ onDataLoaded }) {
 
                 {openId === p._id && (
                   <tr>
-                    <td colSpan={7} className="p-0 border-b">
+                    <td colSpan={8} className="p-0 border-b">
                       <PatientNotes
                         patientId={p._id}
                         patientName={p.name}

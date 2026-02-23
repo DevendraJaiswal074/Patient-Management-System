@@ -56,8 +56,8 @@ function AllPatientList({ onDataLoaded }) {
   }, [allPatients]);
 
   // Helper function to check if a date falls within the selected range
-  const isDateInRange = (patientDate, from, to) => {
-    const pDate = new Date(patientDate);
+  const isDateInRange = (appointmentDate, from, to) => {
+    const pDate = new Date(appointmentDate);
     const fromDateObj = from ? new Date(from) : null;
     const toDateObj = to ? new Date(to) : null;
 
@@ -100,14 +100,14 @@ function AllPatientList({ onDataLoaded }) {
 
   const filteredPatients =
     filter === "all"
-      ? allPatients.filter((p) => isDateInRange(p.createdAt, fromDate, toDate))
+      ? allPatients.filter((p) => isDateInRange(p.appointmentDate || p.createdAt, fromDate, toDate))
       : allPatients
           .filter((p) =>
             filter === "checked-in"
               ? p.status === "Checked In"
               : p.status === "Checked Out"
           )
-          .filter((p) => isDateInRange(p.createdAt, fromDate, toDate));
+          .filter((p) => isDateInRange(p.appointmentDate || p.createdAt, fromDate, toDate));
 
   // apply search filter (name or phone)
   const searchedPatients = filteredPatients.filter((p) => {
@@ -211,7 +211,7 @@ function AllPatientList({ onDataLoaded }) {
               <th className="px-4 py-2 text-left">Patient Name</th>
               <th className="px-4 py-2 text-left">Age</th>
               <th className="px-4 py-2 text-left">Phone Number</th>
-              <th className="px-4 py-2 text-left">Date</th>
+              <th className="px-4 py-2 text-left">Appointment Date</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Status</th>
               <th className="px-4 py-2 text-left">Note</th>
@@ -237,7 +237,7 @@ function AllPatientList({ onDataLoaded }) {
                 <td className="px-4 py-2">{p.phone}</td>
 
                 <td className="px-4 py-2 text-sm text-gray-600">
-                  {formatDate(p.createdAt)}
+                  {formatDate(p.appointmentDate || p.createdAt)}
                 </td>
 
                 <td className="px-4 py-2">

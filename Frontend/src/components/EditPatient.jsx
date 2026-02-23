@@ -6,6 +6,7 @@ function EditPatient({ patient, onEditPatient, onCancel }) {
     age: "",
     phone: "",
     type: "normal",
+    appointmentDate: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,6 +20,9 @@ function EditPatient({ patient, onEditPatient, onCancel }) {
         age: patient.age || "",
         phone: patient.phone || "",
         type: patient.type || "normal",
+        appointmentDate: patient.appointmentDate
+          ? new Date(patient.appointmentDate).toISOString().split("T")[0]
+          : "",
       });
     }
   }, [patient]);
@@ -36,7 +40,7 @@ function EditPatient({ patient, onEditPatient, onCancel }) {
 
     const age = Number(formData.age);
 
-    if (!formData.name || !formData.phone || !formData.age) {
+    if (!formData.name || !formData.phone || !formData.age || !formData.appointmentDate) {
       setMessage({ text: "Please fill all fields", type: "error" });
       return;
     }
@@ -132,6 +136,19 @@ function EditPatient({ patient, onEditPatient, onCancel }) {
               value={formData.phone}
               onChange={handleChange}
               placeholder="Enter 10 digit phone number"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Appointment Date
+            </label>
+            <input
+              type="date"
+              name="appointmentDate"
+              value={formData.appointmentDate}
+              onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
