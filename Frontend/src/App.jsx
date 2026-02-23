@@ -16,6 +16,7 @@ import AdminTodayPatients from './Pages/AdminTodayPatients';
 import AdminGenerateIDs from './Pages/AdminGenerateIDs';
 import AdminFiterDownload from './Pages/AdminFiterDownload';
 import AdminDeletePatients from './Pages/AdminDeletePatients';
+import DateAppointments from './Pages/DateAppointments';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,6 +41,7 @@ function App() {
         <Route path='/admin-dashboard/today-patients' element={<AdminTodayPatients />} />    
         <Route path='/admin-dashboard/generate-ids' element={<AdminGenerateIDs />} />
         <Route path='/admin-dashboard/delete-patients' element={<AdminDeletePatients />} />
+        <Route path='/date-appointments' element={<DateAppointments />} />
       </Routes>
     </div>
   )
