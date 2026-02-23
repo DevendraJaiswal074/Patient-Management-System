@@ -24,12 +24,21 @@ function TodayPatient({ onDataLoaded }) {
         const today = new Date();
         const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
+        // Helper: check if a patient belongs to today
+        // Use appointmentDate if available, otherwise fall back to createdAt
+        const isTodayPatient = (p) => {
+          if (p.appointmentDate) {
+            return p.appointmentDate.slice(0, 10) === todayStr;
+          }
+          return p.createdAt && p.createdAt.slice(0, 10) === todayStr;
+        };
+
         const todayCheckedIn = patients
-          .filter((p) => p.appointmentDate && p.appointmentDate.slice(0, 10) === todayStr)
+          .filter(isTodayPatient)
           .map((p) => ({ ...p, status: "Checked In" }));
 
         const todayCheckedOut = checkedOut
-          .filter((p) => p.appointmentDate && p.appointmentDate.slice(0, 10) === todayStr)
+          .filter(isTodayPatient)
           .map((p) => ({ ...p, status: "Checked Out" }));
 
         // Show checked-out patients first, then checked-in
