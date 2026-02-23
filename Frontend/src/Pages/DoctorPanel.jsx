@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 
 import { backendUrl } from "../App";
 import AllPatientList from "../components/AllPatientList";
-import CheckedOutList from "../components/CheckedOutList";
+import CheckedOutList from "../components/FilteredData";
 import TodayPatient from "../components/TodayPatient";
 import DoctorNotes from "../components/DoctorNotes";
 

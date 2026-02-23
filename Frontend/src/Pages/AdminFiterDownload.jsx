@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import CheckedOutList from "../components/CheckedOutList";
+import FilteredData from "../components/FilteredData";
 
 function AdminFiterDownload() {
   return (
@@ -21,7 +21,7 @@ function AdminFiterDownload() {
           </Link>
         </div>
 
-        <CheckedOutList />
+        <FilteredData />
       </div>
     </div>
   );

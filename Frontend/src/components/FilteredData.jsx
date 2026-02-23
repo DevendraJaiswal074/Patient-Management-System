@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
 import * as XLSX from "xlsx";
 
-function CheckedOutList() {
-  const [checkedOutPatients, setCheckedOutPatients] = useState([]);
+function FilteredData() {
+  const [allPatients, setAllPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
   const [notesExist, setNotesExist] = useState({});
@@ -12,11 +12,11 @@ function CheckedOutList() {
   const [showDateFilter, setShowDateFilter] = useState(false);
 
   useEffect(() => {
-    const fetchCheckedOut = async () => {
+    const fetchAllPatients = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/checked-out`);
+        const response = await fetch(`${backendUrl}/api/patients/all`);
         const data = await response.json();
-        setCheckedOutPatients(data);
+        setAllPatients(data);
         // build notes existence map
         const map = {};
         data.forEach((p) => {
@@ -28,13 +28,13 @@ function CheckedOutList() {
         });
         setNotesExist(map);
       } catch (error) {
-        console.error("Error fetching checked-out patients:", error);
+        console.error("Error fetching all patients:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCheckedOut();
+    fetchAllPatients();
   }, []);
 
   // Helper function to check if a date falls within the selected range
@@ -87,6 +87,12 @@ function CheckedOutList() {
     return `${day}-${month}-${year}`;
   };
 
+  // Helper to get patient status label
+  const getStatusLabel = (p) => {
+    if (p.status === "CheckedOut") return "Checked Out";
+    return "Checked In";
+  };
+
   // Download filtered patients as Excel
   const handleDownloadFilteredList = () => {
     if (filteredPatients.length === 0) {
@@ -101,7 +107,7 @@ function CheckedOutList() {
       "Phone Number": p.phone,
       "Appointment Date": formatDate(p.appointmentDate || p.createdAt),
       Type: p.type === "emergency" ? "Emergency" : "Normal",
-      Status: "Checked Out",
+      Status: getStatusLabel(p),
       Notes: localStorage.getItem(`patient_notes_${p._id}`) || "",
     }));
 
@@ -126,7 +132,7 @@ function CheckedOutList() {
     } catch (e) {}
 
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Checked Out Patients");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "All Patients");
 
     const fromDateFormatted = formatDateForFilename(fromDate);
     const toDateFormatted = formatDateForFilename(toDate);
@@ -134,15 +140,15 @@ function CheckedOutList() {
     XLSX.writeFile(workbook, `${dateRange}.xlsx`);
   };
 
-  // Filter checked-out patients by date range
-  const filteredPatients = checkedOutPatients.filter((p) =>
+  // Filter all patients by date range
+  const filteredPatients = allPatients.filter((p) =>
     isDateInRange(p.appointmentDate || p.createdAt, fromDate, toDate),
   );
 
   if (loading) {
     return (
       <div className="bg-white shadow border border-black/30 rounded p-8 text-center">
-        <p className="text-gray-500">Loading checked-out patients...</p>
+        <p className="text-gray-500">Loading patients...</p>
       </div>
     );
   }
@@ -202,7 +208,7 @@ function CheckedOutList() {
                 📥 Download
               </button>
               <span className="text-sm text-gray-600 font-medium">
-                Showing {filteredPatients.length} of {checkedOutPatients.length}{" "}
+                Showing {filteredPatients.length} of {allPatients.length}{" "}
                 patients
               </span>
             </>
@@ -265,8 +271,12 @@ function CheckedOutList() {
                 </td>
 
                 <td className="px-4 py-2">
-                  <span className="text-xs px-2 py-1 rounded font-medium bg-orange-100 text-orange-700">
-                    Checked Out
+                  <span className={`text-xs px-2 py-1 rounded font-medium ${
+                    p.status === "CheckedOut"
+                      ? "bg-orange-100 text-orange-700"
+                      : "bg-green-100 text-green-700"
+                  }`}>
+                    {getStatusLabel(p)}
                   </span>
                 </td>
 
@@ -312,4 +322,4 @@ function CheckedOutList() {
   );
 }
 
-export default CheckedOutList;
+export default FilteredData;

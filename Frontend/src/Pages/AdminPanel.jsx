@@ -69,8 +69,8 @@ function AdminPanel() {
     },
     {
       id: "filter-download",
-      title: "Reports & Export",
-      path: "/admin-dashboard/checked-out",
+      title: "Filter & Export Data",
+      path: "/admin-dashboard/filter-download",
       icon: "📊",
       description: "Generate reports & downloads",
       details: "Export patient data in multiple formats for analysis and records",

@@ -35,7 +35,7 @@ function App() {
         <Route path='/admin-dashboard' element={<AdminPanel />} />
         
         <Route path='/admin-dashboard/all-patients' element={<AdminAllPatients />} />
-        <Route path='/admin-dashboard/checked-out' element={<AdminFiterDownload />} />
+        <Route path='/admin-dashboard/filter-download' element={<AdminFiterDownload />} />
         <Route path='/admin-dashboard/checked-in' element={<AdminCheckedIn />} />
         <Route path='/admin-dashboard/today-patients' element={<AdminTodayPatients />} />    
         <Route path='/admin-dashboard/generate-ids' element={<AdminGenerateIDs />} />
