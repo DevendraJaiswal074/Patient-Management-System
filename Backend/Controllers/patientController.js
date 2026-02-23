@@ -1,6 +1,52 @@
 const Patient = require("../models/Patient");
 const { sendAppointmentConfirmation } = require("../services/messagingService");
 
+const DAILY_PATIENT_LIMIT = 70;
+
+// Helper: count patients for a given date (YYYY-MM-DD string)
+const countPatientsForDate = async (dateStr) => {
+  const startOfDay = new Date(dateStr);
+  startOfDay.setUTCHours(0, 0, 0, 0);
+  const endOfDay = new Date(dateStr);
+  endOfDay.setUTCHours(23, 59, 59, 999);
+  return Patient.countDocuments({
+    appointmentDate: { $gte: startOfDay, $lte: endOfDay },
+  });
+};
+
+// GET availability for a date (or find next available date)
+exports.getDateAvailability = async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) {
+      return res.status(400).json({ error: "Date query parameter is required" });
+    }
+
+    const count = await countPatientsForDate(date);
+    const available = count < DAILY_PATIENT_LIMIT;
+    const remaining = Math.max(0, DAILY_PATIENT_LIMIT - count);
+
+    // If requested date is full, find the next available date
+    let nextAvailableDate = null;
+    if (!available) {
+      let checkDate = new Date(date);
+      for (let i = 0; i < 90; i++) {
+        checkDate.setDate(checkDate.getDate() + 1);
+        const dateStr = checkDate.toISOString().split("T")[0];
+        const dayCount = await countPatientsForDate(dateStr);
+        if (dayCount < DAILY_PATIENT_LIMIT) {
+          nextAvailableDate = dateStr;
+          break;
+        }
+      }
+    }
+
+    res.json({ date, count, limit: DAILY_PATIENT_LIMIT, remaining, available, nextAvailableDate });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to check date availability" });
+  }
+};
+
 // GET patients (checked-in)
 exports.getPatients = async (req, res) => {
   try {
@@ -24,6 +70,16 @@ exports.addPatient = async (req, res) => {
   }
 
   try {
+    // Check daily patient limit
+    const dateStr = new Date(appointmentDate).toISOString().split("T")[0];
+    const count = await countPatientsForDate(dateStr);
+    if (count >= DAILY_PATIENT_LIMIT) {
+      return res.status(400).json({
+        error: `Daily patient limit of ${DAILY_PATIENT_LIMIT} reached for ${dateStr}. Please choose another date.`,
+        limitReached: true,
+      });
+    }
+
     const newPatient = await Patient.create({
       name,
       age: Number(age),

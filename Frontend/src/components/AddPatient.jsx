@@ -1,16 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { backendUrl } from "../App";
+
+const DAILY_PATIENT_LIMIT = 70;
 
 function AddPatient({ onAddPatient }) {
+  const todayStr = new Date().toISOString().split("T")[0];
+
   const [formData, setFormData] = useState({
     name: "",
     age: "",
     phone: "",
     type: "normal",
-    appointmentDate: "",
+    appointmentDate: todayStr,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  const [dateInfo, setDateInfo] = useState({ remaining: null, available: true, loading: false });
+
+  // Check date availability whenever appointmentDate changes
+  useEffect(() => {
+    const checkAvailability = async () => {
+      if (!formData.appointmentDate) return;
+      setDateInfo((prev) => ({ ...prev, loading: true }));
+      try {
+        const res = await fetch(
+          `${backendUrl}/api/patients/date-availability?date=${formData.appointmentDate}`
+        );
+        const data = await res.json();
+        setDateInfo({
+          remaining: data.remaining,
+          available: data.available,
+          loading: false,
+        });
+        // If date is full, auto-switch to next available date
+        if (!data.available && data.nextAvailableDate) {
+          setMessage({
+            text: `Limit of ${DAILY_PATIENT_LIMIT} patients reached for ${formData.appointmentDate}. Switched to next available date.`,
+            type: "error",
+          });
+          setFormData((prev) => ({ ...prev, appointmentDate: data.nextAvailableDate }));
+          setTimeout(() => setMessage({ text: "", type: "" }), 4000);
+        }
+      } catch {
+        setDateInfo({ remaining: null, available: true, loading: false });
+      }
+    };
+    checkAvailability();
+  }, [formData.appointmentDate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,13 +91,19 @@ function AddPatient({ onAddPatient }) {
 
     if (result.success) {
       setMessage({ text: "Patient added successfully!", type: "success" });
+      // Refresh availability count
+      setDateInfo((prev) => ({
+        ...prev,
+        remaining: prev.remaining !== null ? prev.remaining - 1 : null,
+        available: prev.remaining !== null ? prev.remaining - 1 > 0 : true,
+      }));
       // Reset form
       setFormData({
         name: "",
         age: "",
         phone: "",
         type: "normal",
-        appointmentDate: "",
+        appointmentDate: todayStr,
       });
     } else {
       setMessage({
@@ -121,9 +164,18 @@ function AddPatient({ onAddPatient }) {
           name="appointmentDate"
           value={formData.appointmentDate}
           onChange={handleChange}
-          min={new Date().toISOString().split("T")[0]}
+          min={todayStr}
           className="rounded border border-black/20 p-2"
         />
+        {dateInfo.loading ? (
+          <p className="text-xs text-gray-400">Checking availability...</p>
+        ) : dateInfo.remaining !== null && (
+          <p className={`text-xs ${
+            dateInfo.remaining <= 10 ? "text-red-600 font-semibold" : "text-gray-500"
+          }`}>
+            {dateInfo.remaining} / {DAILY_PATIENT_LIMIT} slots remaining for this date
+          </p>
+        )}
 
         {/* allow enter only number and 10 digitsSystem */}
         <input
@@ -178,12 +230,12 @@ function AddPatient({ onAddPatient }) {
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !dateInfo.available}
           className={`bg-[#3475b9] hover:bg-blue-400 transition-all ease-in text-white font-bold py-1.5 px-5 rounded mt-2 ${
-            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            isSubmitting || !dateInfo.available ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {isSubmitting ? "Adding..." : "Add Patient"}
+          {isSubmitting ? "Adding..." : !dateInfo.available ? "Date Full" : "Add Patient"}
         </button>
       </form>
     </div>
