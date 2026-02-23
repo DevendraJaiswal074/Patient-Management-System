@@ -10,6 +10,7 @@ router.post("/patients/delete-by-date-range", controller.deletePatientsByDateRan
 
 // Other routes
 router.get("/patients/date-availability", controller.getDateAvailability);
+router.get("/patients/by-date", controller.getPatientsByDate);
 router.get("/patients/all", controller.getAllPatients);
 router.get("/patients", controller.getPatients);
 router.post("/patients", controller.addPatient);

@@ -202,9 +202,9 @@ exports.deletePatientsByDate = async (req, res) => {
     }
 
     const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    startOfDay.setUTCHours(0, 0, 0, 0);
     const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    endOfDay.setUTCHours(23, 59, 59, 999);
 
     const result = await Patient.deleteMany({
       createdAt: { $gte: startOfDay, $lte: endOfDay },
@@ -300,5 +300,28 @@ exports.deleteCheckedOutBatch = async (req, res) => {
   } catch (err) {
     console.error("Error deleting checked-out patients:", err);
     res.status(500).json({ error: "Failed to delete checked-out patients", details: err.message });
+  }
+};
+
+// GET patients for a specific appointment date (YYYY-MM-DD)
+exports.getPatientsByDate = async (req, res) => {
+  try {
+    const { date } = req.query;
+    if (!date) {
+      return res.status(400).json({ error: "Date query parameter is required" });
+    }
+
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const patients = await Patient.find({
+      appointmentDate: { $gte: startOfDay, $lte: endOfDay },
+    }).sort({ appointmentDate: 1, createdAt: -1 });
+
+    res.json(patients);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch patients by date" });
   }
 };
