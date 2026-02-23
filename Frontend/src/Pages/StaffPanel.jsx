@@ -129,7 +129,7 @@ function StaffPanel() {
         Staff Dashboard
       </h2>
 
-      <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4 mt-5 mx-2 md:mx-3">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4 mt-5 mx-2 md:mx-3 pb-10">
         <div className="w-full lg:w-auto">
           <AddPatient onAddPatient={handleAddPatient} />
         </div>

@@ -5,31 +5,33 @@ import { backendUrl } from "../App";
 
 function Navbar() {
 
-  const [patients, setPatients] = useState([]);
-  const [checkedOut, setCheckedOut] = useState([]);
+  const [todayTotal, setTodayTotal] = useState(0);
+  const [todayCheckedIn, setTodayCheckedIn] = useState(0);
+  const [todayCheckedOut, setTodayCheckedOut] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Fetch patients
-  const fetchPatients = async () => {
-    try {
-      const response = await fetch(`${backendUrl}/api/patients`);
-      const data = await response.json();
-      setPatients(data);
-
-    } catch (error) {
-      console.error("Error fetching patients:", error);
-    } finally {
-      setLoading(false);
-    }
+  // Check if a date is today
+  const isToday = (dateString) => {
+    if (!dateString) return false;
+    const d = new Date(dateString);
+    const now = new Date();
+    return (
+      d.getFullYear() === now.getFullYear() &&
+      d.getMonth() === now.getMonth() &&
+      d.getDate() === now.getDate()
+    );
   };
 
-  // Fetch checkedOut from backend
-  const fetchCheckedOut = async () => {
+  // Fetch all patients and compute today's counts
+  const fetchTodayCounts = async () => {
     try {
-      const checkOutResponse = await fetch(`${backendUrl}/api/checked-out`);
-      const checkOutdata = await checkOutResponse.json();
-      setCheckedOut(checkOutdata);
+      const response = await fetch(`${backendUrl}/api/patients/all`);
+      const data = await response.json();
 
+      const todayPatients = data.filter((p) => isToday(p.appointmentDate));
+      setTodayTotal(todayPatients.length);
+      setTodayCheckedIn(todayPatients.filter((p) => p.status === "CheckedIn").length);
+      setTodayCheckedOut(todayPatients.filter((p) => p.status === "CheckedOut").length);
     } catch (error) {
       console.error("Error fetching patients:", error);
     } finally {
@@ -38,8 +40,7 @@ function Navbar() {
   };
 
   useEffect(() => {
-    fetchPatients();
-    fetchCheckedOut();
+    fetchTodayCounts();
   }, []);
 
   return (
@@ -69,7 +70,7 @@ function Navbar() {
             <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
           </svg>
           <p className="font-bold">
-            Total Patients: <span className="font-normal">{`${checkedOut.length + patients.length}`}</span>
+            Today's Patients: <span className="font-normal">{todayTotal}</span>
           </p>
         </div>
 
@@ -83,7 +84,7 @@ function Navbar() {
             <path d="M702-480 560-622l57-56 85 85 170-170 56 57-226 226Zm-342 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 260Zm0-340Z" />
           </svg>
           <p className="font-bold">
-            Checked Out: <span className="font-normal">{checkedOut.length}</span>
+            Today's Checked Out: <span className="font-normal">{todayCheckedOut}</span>
           </p>
         </div>
 
@@ -97,7 +98,7 @@ function Navbar() {
             <path d="M480-240Zm-320 80v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440h14q-11 18-16.5 38.5T472-360q-54 1-107.5 14.5T260-306q-9 5-14.5 14t-5.5 20v32h283l80 80H160Zm320-320q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm236 480L576-300q-13-13-18.5-28t-5.5-30q0-32 23-57t59-25q28 0 44 13t38 35q20-20 36.5-34t45.5-14q37 0 59.5 25.5T880-357q0 15-6 30t-18 27L716-160Z" />
           </svg>
           <p className="font-bold">
-            Checked In: <span className="font-normal">{patients.length}</span>
+            Today's Checked In: <span className="font-normal">{todayCheckedIn}</span>
           </p>
         </div>
       </div>

@@ -88,7 +88,7 @@ function TodayPatient({ onDataLoaded }) {
   }
 
   return (
-    <div className="bg-white shadow border border-black/30 rounded">
+    <div className="bg-white shadow border border-black/30 rounded mb-10">
       <div className="flex items-center justify-between px-4 py-2 border-b border-black/30">
         <h2 className="font-bold text-xl text-gray-700">Today's Patients</h2>
         <div className="flex gap-2">

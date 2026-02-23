@@ -73,7 +73,7 @@ function AdminAllPatients() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-100">
+    <div className="w-full min-h-screen bg-gray-100 pb-10">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-3 md:px-6 mt-4 md:mt-6">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { backendUrl } from "../App";
 import * as XLSX from "xlsx";
 
-function FilteredData() {
+function FilterDownload() {
   const [allPatients, setAllPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
@@ -156,7 +156,7 @@ function FilteredData() {
   return (
     <div className="bg-white shadow border border-black/30 rounded">
       <div className="flex items-center justify-between flex-wrap gap-4 px-4 py-3 border-b border-black/30">
-        <h2 className="font-bold text-xl text-gray-700">Download & View</h2>
+        <h2 className="font-bold text-xl text-gray-700">Filter and Download</h2>
         <button
           onClick={() => setShowDateFilter(!showDateFilter)}
           className="text-xs px-3 py-1.5 rounded bg-purple-600 text-white hover:bg-purple-700 transition-all"
@@ -322,4 +322,4 @@ function FilteredData() {
   );
 }
 
-export default FilteredData;
+export default FilterDownload;
