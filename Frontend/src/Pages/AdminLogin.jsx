@@ -266,7 +266,7 @@ const AdminLogin = () => {
 
         {/* Footer */}
         <p className="text-center text-slate-600 text-xs mt-6">
-          © 2026 MediCare Hospital Management System • Admin Portal v2.0
+          © 2025-26 PMS. All Rights Reserved. • Admin Portal
         </p>
       </div>
     </div>

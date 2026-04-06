@@ -146,7 +146,7 @@ const StaffLogin = () => {
 
           {/* Footer left section*/}
           <p className="text-blue-300/60 text-sm mt-6">
-            © PMS Patient Management Hospital • All rights reserved
+            © 2025-26 PMS. All Rights Reserved.
           </p>
         </div>
 

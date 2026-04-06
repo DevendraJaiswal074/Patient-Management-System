@@ -10,14 +10,6 @@ const LoginOption = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-600 rounded-full opacity-10 blur-3xl"></div>
       </div>
 
-      {/* Floating medical icons background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-20 text-6xl">🏥</div>
-        <div className="absolute top-40 right-32 text-5xl">💊</div>
-        <div className="absolute bottom-32 left-40 text-5xl">🩺</div>
-        <div className="absolute bottom-20 right-20 text-6xl">❤️</div>
-      </div>
-
       {/* Main container */}
       <div className="relative z-10 w-full max-w-5xl mx-4 flex rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm bg-white/5 border border-white/10">
         {/* Left Panel - Branding */}
@@ -142,7 +134,7 @@ const LoginOption = () => {
               <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-emerald-400 hover:shadow-lg hover:shadow-emerald-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-emerald-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-200 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"
@@ -187,7 +179,7 @@ const LoginOption = () => {
               <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-blue-400 hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-blue-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-200 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"
@@ -232,7 +224,7 @@ const LoginOption = () => {
               <div className="relative p-6 rounded-2xl border-2 border-gray-100 bg-linear-to-r from-gray-50 to-white hover:border-purple-400 hover:shadow-lg hover:shadow-purple-100 transition-all duration-300 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-purple-100 transition-colors"></div>
                 <div className="relative flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-200 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-200 transition-transform duration-300">
                     <svg
                       className="w-7 h-7 text-white"
                       fill="none"
@@ -292,7 +284,7 @@ const LoginOption = () => {
               Secured with encryption
             </p>
             <p className="text-xs text-gray-300 mt-2">
-              © PMS Patient Management System
+              © 2025-26 PMS. All Rights Reserved.
             </p>
           </div>
         </div>

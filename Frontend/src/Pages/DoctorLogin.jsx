@@ -117,7 +117,7 @@ const DoctorLogin = () => {
 
           {/* Bottom */}
           <p className="text-emerald-200 text-sm">
-            ©PMS Patient Management System
+            © 2025-26 PMS. All Rights Reserved.
           </p>
         </div>
       </div>
